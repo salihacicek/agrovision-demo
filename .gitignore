@@ -1,0 +1,20 @@
+# Environments
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Heavy files and data
+*.pt
+*.mov
+*.mp4
+*.zip
+data/raw_videos/
+raw_frames/
+tarimvideolar/
+
+# MacOS
+.DS_Store
+
+# Logs
+*.log

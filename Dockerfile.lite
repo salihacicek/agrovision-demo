@@ -1,0 +1,18 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Yalnızca hafif gereksinimleri kopyala (OpenCV, YOLO yok)
+COPY requirements-lite.txt .
+RUN pip install --no-cache-dir -r requirements-lite.txt
+
+# Proje dosyalarını kopyala
+COPY . .
+
+# HF Spaces/Render log izinleri
+RUN chmod -R 777 /app
+
+EXPOSE 8000
+
+# Lite modu başlat
+CMD ["python", "scripts/run_lite.py", "--port", "8000"]

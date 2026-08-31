@@ -1,0 +1,23 @@
+{
+    "timestamp": "2026-08-29T00:21:15.908268",
+    "declared_crop": "misir",
+    "detected_crop": "misir",
+    "confidence": 81,
+    "cks_audit_status": "Uygun",
+    "metrics": {
+        "bugday": 0,
+        "misir": 81.84688925743103,
+        "aycicegi": 0,
+        "arpa": 0
+    },
+    "harvested_area_m2": 385.9540002841705,
+    "gps": {
+        "lat": 39.759898250242706,
+        "lon": 32.42639275397784
+    },
+    "parsel_no": "51-113-25-2",
+    "ada_parsel": "25/2",
+    "owner": "Mehmet Yilmaz",
+    "harvest_date": "2026-08-29",
+    "filename": "cks_report_20260829_002115.json"
+}

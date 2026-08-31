@@ -1,0 +1,23 @@
+{
+    "timestamp": "2026-07-23T06:56:21.031386",
+    "declared_crop": "bugday",
+    "detected_crop": "aycicegi",
+    "confidence": 74,
+    "cks_audit_status": "Uyumsuz (Kaçak Ekim)",
+    "metrics": {
+        "bugday": 0,
+        "misir": 0,
+        "aycicegi": 74.93718266487122,
+        "arpa": 0
+    },
+    "harvested_area_m2": 1314.7756506215123,
+    "gps": {
+        "lat": 38.00005481258679,
+        "lon": 32.49971262958971
+    },
+    "parsel_no": "51-113-25-2",
+    "ada_parsel": "25/2",
+    "owner": "Mehmet Yilmaz",
+    "harvest_date": "2026-07-23",
+    "filename": "cks_report_20260723_065621.json"
+}

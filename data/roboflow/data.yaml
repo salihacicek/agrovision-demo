@@ -1,0 +1,13 @@
+train: /Users/salihacicek/Desktop/bugdaymisir/data/roboflow/train/images
+val: /Users/salihacicek/Desktop/bugdaymisir/data/roboflow/valid/images
+test: /Users/salihacicek/Desktop/bugdaymisir/data/roboflow/test/images
+
+nc: 4
+names: ['arpa', 'ayc', 'bugday', 'misir']
+
+roboflow:
+  workspace: salihas-workspace-f2kmw
+  project: plant-u2c0o
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/salihas-workspace-f2kmw/plant-u2c0o/dataset/1

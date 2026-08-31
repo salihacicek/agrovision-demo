@@ -1,0 +1,23 @@
+{
+    "timestamp": "2026-07-23T00:39:00.125154",
+    "declared_crop": "bugday",
+    "detected_crop": "bugday",
+    "confidence": 62,
+    "cks_audit_status": "Uygun",
+    "metrics": {
+        "bugday": 62.43012507756551,
+        "misir": 0,
+        "aycicegi": 0,
+        "arpa": 0
+    },
+    "harvested_area_m2": 4407.648891325427,
+    "gps": {
+        "lat": 37.99981368000948,
+        "lon": 32.50002071642391
+    },
+    "parsel_no": "51-113-25-2",
+    "ada_parsel": "25/2",
+    "owner": "Mehmet Yilmaz",
+    "harvest_date": "2026-07-23",
+    "filename": "cks_report_20260723_003900.json"
+}

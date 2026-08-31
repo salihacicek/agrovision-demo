@@ -1,0 +1,22 @@
+# Model ve Sistem Konfigürasyonu (Buğday/Mısır)
+model:
+  path: "models/best.pt"
+  classes:
+    0: "Buğday"
+    1: "Mısır"
+  confidence_threshold: 0.5
+  iou_threshold: 0.45
+  input_size: 640
+  device: "auto" # mps, cuda, cpu
+
+dashboard:
+  enabled: true
+  update_interval_ms: 100
+
+session:
+  auto_save: true
+  save_dir: "sessions"
+
+health_index:
+  enabled: true
+  calculation_method: "coverage" # "coverage" veya "count"

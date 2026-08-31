@@ -1,0 +1,301 @@
+     1	import serial
+     2	import pynmea2
+     3	import threading
+     4	import time
+     5	import random
+     6	import math
+     7	from dataclasses import dataclass
+     8	from typing import Optional, Dict, Any
+     9	
+    10	@dataclass
+    11	class GPSData:
+    12	    """GPS verisini tutan sınıf."""
+    13	    lat: Optional[float] = None
+    14	    lon: Optional[float] = None
+    15	    altitude: Optional[float] = None
+    16	    speed_knots: Optional[float] = None
+    17	    heading_true: Optional[float] = None
+    18	    satellites: int = 0
+    19	    quality: int = 0
+    20	    timestamp: Optional[Any] = None
+    21	    total_distance_m: float = 0.0
+    22	
+    23	    def to_dict(self) -> Dict[str, Any]:
+    24	        return {
+    25	            "lat": self.lat,
+    26	            "lon": self.lon,
+    27	            "altitude": self.altitude,
+    28	            "speed_knots": self.speed_knots,
+    29	            "heading_true": self.heading_true,
+    30	            "satellites": self.satellites,
+    31	            "quality": self.quality,
+    32	            "timestamp": str(self.timestamp) if self.timestamp else None,
+    33	            "total_distance_m": self.total_distance_m
+    34	        }
+    35	
+    36	def calculate_haversine(lat1, lon1, lat2, lon2):
+    37	    """İki koordinat arasındaki mesafeyi metre cinsinden hesaplar."""
+    38	    if None in (lat1, lon1, lat2, lon2):
+    39	        return 0.0
+    40	    R = 6371000  # Dünya yarıçapı (metre)
+    41	    phi1 = math.radians(lat1)
+    42	    phi2 = math.radians(lat2)
+    43	    delta_phi = math.radians(lat2 - lat1)
+    44	    delta_lambda = math.radians(lon2 - lon1)
+    45	    a = math.sin(delta_phi/2.0)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda/2.0)**2
+    46	    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    47	    return R * c
+    48	
+    49	class GPSReader:
+    50	    """NMEA cümlelerini parse eden geliştirilmiş GPS okuyucu."""
+    51	    
+    52	    def __init__(self, port: str = "/dev/ttyUSB0", baudrate: int = 9600, simulated: bool = False):
+    53	        self.port = port
+    54	        self.baudrate = baudrate
+    55	        self.simulated = simulated
+    56	        self.current_data = GPSData()
+    57	        self._lock = threading.Lock()
+    58	        self.running = False
+    59	        self._thread = None
+    60	        self.serial_conn = None
+    61	        self.last_lat = None
+    62	        self.last_lon = None
+    63	
+    64	        self.last_lon = None
+    65	        self.is_paused = False
+    66	        
+    67	        # Varsayılan (P157)
+    68	        self.waypoints = [
+    69	            (40.210050, 33.010100), (40.209850, 33.007750),
+    70	            (40.209775, 33.007825), (40.209975, 33.010100),
+    71	            (40.209900, 33.010100), (40.209700, 33.007900),
+    72	            (40.209625, 33.007975), (40.209825, 33.010100),
+    73	            (40.209750, 33.010100), (40.209550, 33.008050),
+    74	            (40.209475, 33.008125), (40.209675, 33.010100),
+    75	        ]
+    76	
+    77	
+    78	    def reset_distance(self):
+    79	        """Toplanan mesafeyi sıfırlar."""
+    80	        with self._lock:
+    81	            self.current_data.total_distance_m = 0.0
+    82	            self.last_lat = None
+    83	            self.last_lon = None
+    84	
+    85	    def start(self):
+    86	        """GPS okuma döngüsünü başlatır."""
+    87	        if self.running:
+    88	            return
+    89	        
+    90	        self.running = True
+    91	        if not self.simulated:
+    92	            try:
+    93	                self.serial_conn = serial.Serial(self.port, self.baudrate, timeout=1)
+    94	            except serial.SerialException as e:
+    95	                print(f"GPS bağlantı hatası: {e}. Simülasyon moduna geçiliyor.")
+    96	                self.simulated = True
+    97	
+    98	        self._thread = threading.Thread(target=self._read_loop, daemon=True)
+    99	        self._thread.start()
+   100	
+   101	    def stop(self):
+   102	        """GPS okumayı durdurur."""
+   103	        self.running = False
+   104	        if self._thread:
+   105	            self._thread.join()
+   106	        if self.serial_conn and self.serial_conn.is_open:
+   107	            self.serial_conn.close()
+   108	
+   109	    def _read_loop(self):
+   110	        """Arka planda çalışan okuma döngüsü."""
+   111	        while self.running:
+   112	            if self.is_paused:
+   113	                time.sleep(1)
+   114	                continue
+   115	
+   116	            if self.simulated:
+   117	                self._generate_fake_data()
+   118	                time.sleep(0.1) # 10 FPS
+   119	                continue
+   120	
+   121	            try:
+   122	                if self.serial_conn.in_waiting > 0:
+   123	                    line = self.serial_conn.readline().decode('ascii', errors='replace').strip()
+   124	                    self._parse_nmea(line)
+   125	            except Exception as e:
+   126	                print(f"GPS okuma hatası: {e}")
+   127	                time.sleep(1)
+   128	
+   129	    def _parse_nmea(self, line: str):
+   130	        """NMEA GGA, RMC, VTG formatlarını işler."""
+   131	        try:
+   132	            if line.startswith('$GPGGA') or line.startswith('$GNGGA'):
+   133	                msg = pynmea2.parse(line)
+   134	                with self._lock:
+   135	                    if self.last_lat is not None and self.last_lon is not None:
+   136	                        dist = calculate_haversine(self.last_lat, self.last_lon, msg.latitude, msg.longitude)
+   137	                        if dist > 0.5: # Sadece 0.5 metreden büyük değişimleri say (titremeyi önle)
+   138	                            self.current_data.total_distance_m += dist
+   139	                    self.last_lat = msg.latitude
+   140	                    self.last_lon = msg.longitude
+   141	                    
+   142	                    self.current_data.lat = msg.latitude
+   143	                    self.current_data.lon = msg.longitude
+   144	                    self.current_data.altitude = getattr(msg, 'altitude', None)
+   145	                    self.current_data.satellites = getattr(msg, 'num_sats', 0)
+   146	                    self.current_data.quality = getattr(msg, 'gps_qual', 0)
+   147	                    self.current_data.timestamp = getattr(msg, 'timestamp', None)
+   148	            
+   149	            elif line.startswith('$GPRMC') or line.startswith('$GNRMC'):
+   150	                msg = pynmea2.parse(line)
+   151	                with self._lock:
+   152	                    self.current_data.lat = msg.latitude
+   153	                    self.current_data.lon = msg.longitude
+   154	                    self.current_data.speed_knots = getattr(msg, 'spd_over_grnd', None)
+   155	                    self.current_data.heading_true = getattr(msg, 'true_course', None)
+   156	                    
+   157	        except pynmea2.ParseError:
+   158	            pass
+   159	
+   160	
+   161	    def set_waypoints_from_polygon(self, coords):
+   162	        """Dinamik olarak parsel poligonundan çapraz waypointler hesaplar."""
+   163	        if not coords or len(coords) != 4:
+   164	            return False
+   165	            
+   166	        tl, tr, br, bl = coords
+   167	        
+   168	        height = tl[0] - bl[0]
+   169	        # Eğer çok küçükse en az 4 tur at, büyükse daha fazla
+   170	        num_passes = max(4, int(height / 0.0001))
+   171	        
+   172	        new_waypoints = []
+   173	        for i in range(num_passes):
+   174	            f = i / max(1, (num_passes - 1))
+   175	            
+   176	            # Sol kenar (TL'den BL'ye)
+   177	            left_lat = tl[0] + f * (bl[0] - tl[0])
+   178	            left_lon = tl[1] + f * (bl[1] - tl[1])
+   179	            
+   180	            # Sağ kenar (TR'den BR'ye)
+   181	            right_lat = tr[0] + f * (br[0] - tr[0])
+   182	            right_lon = tr[1] + f * (br[1] - tr[1])
+   183	            
+   184	            # Kenarlara tam değmemesi için hafif içe çekelim
+   185	            lon_margin = abs(right_lon - left_lon) * 0.05
+   186	            if left_lon < right_lon:
+   187	                left_lon += lon_margin
+   188	                right_lon -= lon_margin
+   189	            else:
+   190	                left_lon -= lon_margin
+   191	                right_lon += lon_margin
+   192	                
+   193	            if i % 2 == 0:
+   194	                new_waypoints.append((right_lat, right_lon))
+   195	                new_waypoints.append((left_lat, left_lon))
+   196	            else:
+   197	                new_waypoints.append((left_lat, left_lon))
+   198	                new_waypoints.append((right_lat, right_lon))
+   199	                
+   200	        with self._lock:
+   201	            self.waypoints = new_waypoints
+   202	            self.sim_state = {
+   203	                'lat': self.waypoints[0][0],
+   204	                'lon': self.waypoints[0][1],
+   205	                'target_idx': 1,
+   206	                'speed_timer': 0,
+   207	                'current_speed': 6.0
+   208	            }
+   209	    
+   210	        self.last_lon = None
+   211	        self.is_paused = False
+   212	        
+   213	        # Varsayılan (P157)
+   214	        self.waypoints = [
+   215	            (40.210050, 33.010100), (40.209850, 33.007750),
+   216	            (40.209775, 33.007825), (40.209975, 33.010100),
+   217	            (40.209900, 33.010100), (40.209700, 33.007900),
+   218	            (40.209625, 33.007975), (40.209825, 33.010100),
+   219	            (40.209750, 33.010100), (40.209550, 33.008050),
+   220	            (40.209475, 33.008125), (40.209675, 33.010100),
+   221	        ]
+   222	
+   223	        return True
+   224	
+   225	    def _generate_fake_data(self):
+   226	        """Simülasyon için sahte veriler üretir."""
+   227	        # Parsel 157'nin tam içinde kalan, sağ üst köşeden başlayan zigzag waypointler
+   228	        # (Poligon ray-casting ile hesaplandı, kenarlardan taşmaz)
+   229	        with self._lock:
+   230	            if not hasattr(self, 'sim_state'):
+   231	                self.sim_state = {
+   232	                    'lat': self.waypoints[0][0],
+   233	                    'lon': self.waypoints[0][1],
+   234	                    'target_idx': 1,
+   235	                    'speed_timer': 0,
+   236	                    'current_speed': random.uniform(5.0, 7.5)
+   237	                }
+   238	                self.current_data.lat = self.sim_state['lat']
+   239	                self.current_data.lon = self.sim_state['lon']
+   240	                self.last_lat = self.sim_state['lat']
+   241	                self.last_lon = self.sim_state['lon']
+   242	
+   243	            # Hızın saniyeler boyunca sabit kalması (Barkod görünümünü engellemek için)
+   244	            self.sim_state['speed_timer'] -= 1
+   245	            if self.sim_state['speed_timer'] <= 0:
+   246	                if random.random() < 0.3: 
+   247	                    # Kırmızı (Hızlı) bölge — tane kaybı tehlikesi!
+   248	                    self.sim_state['current_speed'] = random.uniform(8.5, 12.5)
+   249	                    self.sim_state['speed_timer'] = random.randint(8, 25)
+   250	                elif random.random() < 0.15:
+   251	                    # Yavaşlama / dönüş
+   252	                    self.sim_state['current_speed'] = random.uniform(2.0, 4.0)
+   253	                    self.sim_state['speed_timer'] = random.randint(5, 12)
+   254	                else:
+   255	                    # Mavi (Normal) bölge
+   256	                    self.sim_state['current_speed'] = random.uniform(4.5, 7.5)
+   257	                    self.sim_state['speed_timer'] = random.randint(15, 40)
+   258	            
+   259	            # Her tick'te ufak salınım ekle (hep aynı sayıda donmuş gibi görünmesin)
+   260	            speed_kmh = self.sim_state['current_speed'] + random.uniform(-0.5, 0.5)
+   261	                
+   262	            # Adım büyüklüğü
+   263	            step_size = 0.000003 * (speed_kmh / 5.0)
+   264	            
+   265	            target = WAYPOINTS[self.sim_state['target_idx']]
+   266	            d_lat = target[0] - self.sim_state['lat']
+   267	            d_lon = target[1] - self.sim_state['lon']
+   268	            distance = math.sqrt(d_lat**2 + d_lon**2)
+   269	
+   270	            if distance < step_size:
+   271	                # Hedefe ulaştık, sıradakine geç
+   272	                if self.sim_state['target_idx'] < len(self.waypoints) - 1:
+   273	                    self.sim_state['target_idx'] += 1
+   274	                else:
+   275	                    # Parsel bitti, durdur
+   276	                    self.is_paused = True
+   277	                    # Bulunduğu yerde kalmasını sağla
+   278	            else:
+   279	                # Hedefe doğru ilerle
+   280	                self.sim_state['lat'] += (d_lat / distance) * step_size
+   281	                self.sim_state['lon'] += (d_lon / distance) * step_size
+   282	
+   283	            new_lat = self.sim_state['lat']
+   284	            new_lon = self.sim_state['lon']
+   285	            
+   286	            dist = calculate_haversine(self.last_lat, self.last_lon, new_lat, new_lon)
+   287	            self.current_data.total_distance_m += dist
+   288	            
+   289	            self.last_lat = new_lat
+   290	            self.last_lon = new_lon
+   291	            self.current_data.lat = new_lat
+   292	            self.current_data.lon = new_lon
+   293	            # Knots'a çevir (dashboard geri km/h'ye çevirecek: * 1.852)
+   294	            self.current_data.speed_knots = speed_kmh / 1.852
+   295	            self.current_data.quality = 1
+   296	            self.current_data.satellites = random.randint(8, 12)
+   297	
+   298	    def get_data(self) -> GPSData:
+   299	        """Güncel GPS verisini kopyalayarak döndürür (thread-safe)."""
+   300	        with self._lock:
+   301	            return GPSData(**self.current_data.to_dict())
