@@ -23,7 +23,9 @@
             
             <nav class="nav-menu">
                 <a href="#" class="nav-link active" data-target="tab-anasayfa">Ana Sayfa</a>
+                <a href="#" class="nav-link" data-target="tab-parsel-takip">Parsel Takip</a>
                 <a href="#" class="nav-link" data-target="tab-arac-takip">Araç Takip & Telemetri</a>
+                <a href="#" class="nav-link" data-target="tab-cks">ÇKS</a>
                 <!-- Görüntü İşleme İhtiyacı İçin Gizli Sekme -->
                 <!-- <a href="#" class="nav-link" data-target="tab-canli">Canlı Analiz</a> -->
                 <a href="#" class="nav-link" data-target="tab-raporlar">Geçmiş Raporlar</a>
@@ -45,6 +47,18 @@
                     </div>
                     
                     <div class="landing-cards">
+                        <div class="landing-card" onclick="switchTab('tab-cks')">
+                            <i class="fa-solid fa-address-card"></i>
+                            <h3>ÇKS Belgesi</h3>
+                            <p>Çiftçi Kayıt Sistemi ve Aktif Parseller</p>
+                        </div>
+
+                        <div class="landing-card" onclick="switchTab('tab-parsel-takip')">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <h3>Parsel Takip</h3>
+                            <p>Parsel bazında güncel ürün ve hasat durumu</p>
+                        </div>
+                        
                         <div class="landing-card" onclick="switchTab('tab-arac-takip')">
                             <i class="fa-solid fa-map-location-dot"></i>
                             <h3>Araç Takip</h3>
@@ -145,6 +159,79 @@
             </div>
 
             
+            <!-- PARSEL TAKİP SEKMESİ -->
+            <div id="tab-parsel-takip" class="tab-pane">
+                <header class="content-header" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h1 style="font-size: 1.8rem; color: #1e293b; display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-layer-group" style="color: #64748b;"></i> Parsel Listesi
+                        </h1>
+                    </div>
+                    <div style="background: #f1f5f9; padding: 4px; border-radius: 8px; display: flex; gap: 4px;">
+                        <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;"><i class="fa-solid fa-table"></i> Tablo</button>
+                        <button class="btn" style="background: transparent; color: #64748b; padding: 6px 12px; font-size: 0.85rem; border: none;"><i class="fa-solid fa-border-all"></i> Kart</button>
+                        <button class="btn" style="background: transparent; color: #64748b; padding: 6px 12px; font-size: 0.85rem; border: none;"><i class="fa-solid fa-map"></i> Harita</button>
+                    </div>
+                </header>
+                
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Parsel No</th>
+                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Ada/Parsel</th>
+                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Alan (m²)</th>
+                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Malik</th>
+                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Kayıtlı Ürün</th>
+                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Tespit Edilen</th>
+                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Durum</th>
+                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Son Kontrol</th>
+                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="parsel-listesi-body">
+                            <!-- JS ile doldurulacak -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ÇKS SEKMESİ -->
+            <div id="tab-cks" class="tab-pane">
+                <div class="card" style="display: flex; align-items: center; justify-content: space-between; padding: 2rem; margin-bottom: 2rem; border-radius: 12px;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem;">
+                        <div style="width: 80px; height: 80px; background: #ef4444; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+                            <i class="fa-regular fa-user"></i>
+                        </div>
+                        <div>
+                            <h2 style="margin: 0 0 10px 0; font-size: 1.8rem; color: #1e293b;">Osman Cingitaş</h2>
+                            <div style="display: flex; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
+                                <span><i class="fa-regular fa-id-card"></i> T.C.: 12345678901</span>
+                                <span><i class="fa-solid fa-file-contract" style="color:#ef4444;"></i> ÇKS No: 2025-0158</span>
+                                <span><i class="fa-solid fa-location-dot" style="color:#ef4444;"></i> Niğde</span>
+                                <span><i class="fa-solid fa-layer-group" style="color:#ef4444;"></i> 6 Parsel Kaydı</span>
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <span style="background: #22c55e; color: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                                    <i class="fa-solid fa-check"></i> ÇKS Belgesi Aktif
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" style="background: #ef4444; border: none; padding: 10px 20px; border-radius: 8px;"><i class="fa-solid fa-plus"></i> ÇKS'ye Ekle</button>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 1rem; color: #334155; font-size: 1.2rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-map-location-dot"></i> Kayıtlı Parseller
+                </h3>
+                <hr style="border: none; border-top: 1px solid #ef4444; margin-bottom: 1.5rem;">
+
+                <div id="cks-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+                    <!-- JS ile doldurulacak -->
+                </div>
+            </div>
             <!-- GEÇMİŞ RAPORLAR SEKMESİ -->
             <div id="tab-raporlar" class="tab-pane">
                 <header class="content-header" style="margin-bottom: 2rem;">
