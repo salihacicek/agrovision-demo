@@ -323,6 +323,61 @@ async def export_cks():
         
     return JSONResponse({"status": "success", "file": filename})
 
+@app.get("/api/parcels")
+async def get_parcels():
+    """TKGM Parsel verilerini GeoJSON formatında döndürür."""
+    geojson_feature_collection = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [33.007600, 40.209900], [33.010200, 40.210100],
+                        [33.010200, 40.209600], [33.008100, 40.209400],
+                        [33.007600, 40.209900]
+                    ]]
+                },
+                "properties": {
+                    "parsel_id": "P157", "ada_no": "124", "parsel_no": "157",
+                    "malik_adi": "Ahmet Yılmaz", "alan_donum": 4.82, "urun_tipi": "Buğday"
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [33.010300, 40.210100], [33.013500, 40.210300],
+                        [33.013500, 40.209800], [33.010300, 40.209600],
+                        [33.010300, 40.210100]
+                    ]]
+                },
+                "properties": {
+                    "parsel_id": "P158", "ada_no": "124", "parsel_no": "158",
+                    "malik_adi": "Mehmet Demir", "alan_donum": 3.65, "urun_tipi": "Arpa"
+                }
+            },
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [33.003500, 40.210200], [33.006800, 40.210600],
+                        [33.008500, 40.208800], [33.004000, 40.208400],
+                        [33.003500, 40.210200]
+                    ]]
+                },
+                "properties": {
+                    "parsel_id": "P156", "ada_no": "124", "parsel_no": "156",
+                    "malik_adi": "Bilinmiyor", "alan_donum": 5.10, "urun_tipi": "Mısır"
+                }
+            }
+        ]
+    }
+    return JSONResponse(geojson_feature_collection)
+
 @app.get("/api/reports")
 async def get_reports():
     """Tüm JSON raporlarını listeler."""

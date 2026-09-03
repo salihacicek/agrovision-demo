@@ -18,137 +18,92 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/
     maxNativeZoom: 18
 }).addTo(map);
 
-// ─── TKGM Kadastro Parselleri ─────────────────────────────────────
-// Ankara / Sincan / Temelli Bölgesi — Gerçeğe yakın parsel şekilleri
-// Her parsel biraz yamuk/düzensiz olacak şekilde çizildi (TKGM stilinde)
+// --- TKGM GeoJSON Katmanı Kurulumu ---
+let parcelGeoJsonLayer;
+let routeSegments = [];
+let parcels = []; // startOnParcel uyumluluğu için global dizi
 
-const parcels = [
-    // ── HEDEF PARSEL: 157 (Biçerdöverin bulunduğu ince şerit tarla - Tam Koyu Yeşil Şerit) ──
-    {
-        id: 'P157',
-        coords: [
-            [40.209900, 33.007600], // TL (Yolun sağı, üst)
-            [40.210100, 33.010200], // TR
-            [40.209600, 33.010200], // BR
-            [40.209400, 33.008100]  // BL (Yolun sağı, alt)
-        ],
-        color: '#84cc16',
-        fillColor: '#84cc16',
-        fillOpacity: 0.18,
-        label: '<b>Ada: 124 | Parsel: 157</b><br>Malik: Ahmet Yılmaz<br>Alan: 4.82 Dönüm<br>Ürün: Buğday'
-    },
-    // ── Parsel 158 (Sağ komşu - P157'nin sağındaki şerit) ──
-    {
-        id: 'P158',
-        coords: [
-            [40.210100, 33.010300], // TL
-            [40.210300, 33.013500], // TR
-            [40.209800, 33.013500], // BR
-            [40.209600, 33.010300]  // BL
-        ],
-        color: '#f59e0b',
-        fillColor: '#f59e0b',
-        fillOpacity: 0.10,
-        label: '<b>Ada: 124 | Parsel: 158</b><br>Malik: Mehmet Demir<br>Alan: 3.65 Dönüm<br>Ürün: Arpa'
-    },
-    // ── Parsel 156 (Sol komşu - Yolun karşısındaki şerit) ──
-    {
-        id: 'P156',
-        coords: [
-            [40.210200, 33.003500], // TL
-            [40.210600, 33.006800], // TR (Yolun solu)
-            [40.208800, 33.008500], // BR (Yolun solu)
-            [40.208400, 33.004000]  // BL
-        ],
-        color: '#f59e0b',
-        fillColor: '#f59e0b',
-        fillOpacity: 0.10,
-        label: '<b>Ada: 124 | Parsel: 156</b><br>Alan: 5.10 Dönüm<br>Ürün: Mısır'
-    },
-    // ── Parsel 201 (Alt komşu - P157'nin altındaki açık yeşil şerit) ──
-    {
-        id: 'P201',
-        coords: [
-            [40.209300, 33.008200], // TL
-            [40.209500, 33.010200], // TR
-            [40.209000, 33.010200], // BR
-            [40.208800, 33.008700]  // BL
-        ],
-        color: '#fb923c',
-        fillColor: '#fb923c',
-        fillOpacity: 0.08,
-        label: '<b>Ada: 124 | Parsel: 201</b><br>Alan: 2.88 Dönüm<br>Durum: Nadas'
-    },
-    // ── Parsel 202 (Alt sağ komşu - P158'in altındaki şerit) ──
-    {
-        id: 'P202',
-        coords: [
-            [40.209500, 33.010300], // TL
-            [40.209700, 33.013500], // TR
-            [40.209200, 33.013500], // BR
-            [40.209000, 33.010300]  // BL
-        ],
-        color: '#fb923c',
-        fillColor: '#fb923c',
-        fillOpacity: 0.08,
-        label: '<b>Ada: 124 | Parsel: 202</b><br>Alan: 4.20 Dönüm<br>Ürün: Ayçiçeği'
-    },
-    // ── Parsel 155 (Üst komşu - P157'nin üstündeki kahverengi şerit) ──
-    {
-        id: 'P155',
-        coords: [
-            [40.210600, 33.007000], // TL
-            [40.210800, 33.010200], // TR
-            [40.210200, 33.010200], // BR
-            [40.210000, 33.007500]  // BL
-        ],
-        color: '#f59e0b',
-        fillColor: '#f59e0b',
-        fillOpacity: 0.08,
-        label: '<b>Ada: 124 | Parsel: 155</b><br>Alan: 3.10 Dönüm<br>Ürün: Buğday'
+// Parseller için istenen Özel GIS Stili (2px stroke, transparan dolgu)
+const tkgmStyle = {
+    color: "#f59e0b",
+    weight: 2,
+    opacity: 1,
+    fillColor: "#f59e0b",
+    fillOpacity: 0.15,
+    lineJoin: 'round',
+    renderer: canvasRenderer
+};
+
+// Backend'den GeoJSON Verisini Çek ve Render Et
+async function loadTKGMParcels() {
+    try {
+        const response = await fetch('/api/parcels');
+        if (!response.ok) throw new Error("Parsel verisi alınamadı");
+        
+        const geojsonData = await response.json();
+        parcels = []; // Sıfırla
+
+        if (parcelGeoJsonLayer) {
+            map.removeLayer(parcelGeoJsonLayer);
+        }
+
+        parcelGeoJsonLayer = L.geoJSON(geojsonData, {
+            style: tkgmStyle,
+            onEachFeature: function (feature, layer) {
+                const props = feature.properties;
+                
+                // startOnParcel için geriye dönük uyumluluk verisi oluştur
+                parcels.push({
+                    id: props.parsel_id,
+                    coords: feature.geometry.coordinates[0].map(coord => [coord[1], coord[0]]) // [lat, lon] formatına çevir
+                });
+                const popupContent = `
+                    <div style="text-align: center; font-family: 'Inter', sans-serif;">
+                        <b>Ada: ${props.ada_no} | Parsel: ${props.parsel_no}</b><br>
+                        Malik: ${props.malik_adi}<br>
+                        Alan: ${props.alan_donum} Dönüm<br>
+                        Kayıtlı Ürün: ${props.urun_tipi}<br><br>
+                        <button onclick="startOnParcel('${props.parsel_id}')" 
+                                style="background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+                            Bu Parselde Başla
+                        </button>
+                    </div>
+                `;
+                layer.bindPopup(popupContent);
+                
+                layer.on({
+                    mouseover: function (e) {
+                        const l = e.target;
+                        l.setStyle({ fillOpacity: 0.4, weight: 3, color: '#ef4444' });
+                    },
+                    mouseout: function (e) {
+                        parcelGeoJsonLayer.resetStyle(e.target);
+                    }
+                });
+
+                // Her parselin ortasına id yazan bir marker ekle
+                const bounds = layer.getBounds();
+                const center = bounds.getCenter();
+                L.marker(center, {
+                    icon: L.divIcon({
+                        className: '',
+                        html: `<div class="parcel-label">${props.parsel_id}</div>`,
+                        iconAnchor: [16, 10]
+                    })
+                }).bindPopup(popupContent).addTo(map);
+            }
+        }).addTo(map);
+        
+    } catch (error) {
+        console.error("GIS Katman Hatası:", error);
     }
-];
+}
 
-// Parsel etiket konumlarını haritaya yaz
-const parcelLabelLayer = L.layerGroup().addTo(map);
+// Harita yüklendiğinde fonksiyonu tetikle
+loadTKGMParcels();
 
-parcels.forEach(p => {
-    const poly = L.polygon(p.coords, {
-        color: p.color,
-        weight: 2.5,
-        fillColor: p.fillColor,
-        fillOpacity: p.fillOpacity,
-        renderer: canvasRenderer
-    }).addTo(map);
-    
-    // Popup içeriğine "Bu Parselde Başla" butonu ekliyoruz
-    const popupContent = `
-        <div style="text-align: center;">
-            ${p.label}
-            <br><br>
-            <button onclick="startOnParcel('${p.id}')" 
-                    style="background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px;">
-                Bu Parselde Başla
-            </button>
-        </div>
-    `;
-    poly.bindPopup(popupContent);
-    
-    // Her parselin ortasına parsel numarası etiketi
-    const center = poly.getBounds().getCenter();
-    const labelMarker = L.marker(center, {
-        icon: L.divIcon({
-            className: '',
-            html: `<div class="parcel-label">${p.id}</div>`,
-            iconAnchor: [16, 10]
-        })
-    }).addTo(parcelLabelLayer);
-    labelMarker.bindPopup(popupContent);
-});
 
 // Yeni parsele geçildiğinde hasat rotasını temizlemek için global fonksiyon
-let routeSegments = [];
-
 window.startOnParcel = function(parcelId) {
     const parcel = parcels.find(p => p.id === parcelId);
     if (!parcel) return;
