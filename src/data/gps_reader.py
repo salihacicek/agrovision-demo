@@ -157,43 +157,11 @@ class GPSReader:
 
 
     def set_waypoints_from_polygon(self, coords):
-        """Dinamik olarak parsel poligonundan çapraz waypointler hesaplar."""
-        if not coords or len(coords) != 4:
+        """Dinamik olarak parsel poligonunun etrafından dolanacak şekilde waypointler hesaplar."""
+        if not coords or len(coords) < 3:
             return False
             
-        tl, tr, br, bl = coords
-        
-        height = tl[0] - bl[0]
-        # Eğer çok küçükse en az 4 tur at, büyükse daha fazla
-        num_passes = max(4, int(height / 0.0001))
-        
-        new_waypoints = []
-        for i in range(num_passes):
-            f = i / max(1, (num_passes - 1))
-            
-            # Sol kenar (TL'den BL'ye)
-            left_lat = tl[0] + f * (bl[0] - tl[0])
-            left_lon = tl[1] + f * (bl[1] - tl[1])
-            
-            # Sağ kenar (TR'den BR'ye)
-            right_lat = tr[0] + f * (br[0] - tr[0])
-            right_lon = tr[1] + f * (br[1] - tr[1])
-            
-            # Kenarlara tam değmemesi için hafif içe çekelim
-            lon_margin = abs(right_lon - left_lon) * 0.05
-            if left_lon < right_lon:
-                left_lon += lon_margin
-                right_lon -= lon_margin
-            else:
-                left_lon -= lon_margin
-                right_lon += lon_margin
-                
-            if i % 2 == 0:
-                new_waypoints.append((right_lat, right_lon))
-                new_waypoints.append((left_lat, left_lon))
-            else:
-                new_waypoints.append((left_lat, left_lon))
-                new_waypoints.append((right_lat, right_lon))
+        new_waypoints = coords
                 
         with self._lock:
             self.waypoints = new_waypoints

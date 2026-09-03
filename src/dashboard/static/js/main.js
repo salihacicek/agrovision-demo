@@ -23,21 +23,21 @@ let parcelGeoJsonLayer;
 let routeSegments = [];
 let parcels = []; // startOnParcel uyumluluğu için global dizi
 
-// Parseller için istenen Özel GIS Stili (2px stroke, transparan dolgu)
+// Parseller için istenen Özel GIS Stili (2px stroke, %40 transparan dolgu)
 const tkgmStyle = {
     color: "#f59e0b",
     weight: 2,
     opacity: 1,
     fillColor: "#f59e0b",
-    fillOpacity: 0.15,
+    fillOpacity: 0.4,
     lineJoin: 'round',
     renderer: canvasRenderer
 };
 
-// Backend'den GeoJSON Verisini Çek ve Render Et
+// Lokal JSON dosyasından GeoJSON Verisini Çek ve Render Et
 async function loadTKGMParcels() {
     try {
-        const response = await fetch('/api/parcels');
+        const response = await fetch('/static/assets/data/parseller.json');
         if (!response.ok) throw new Error("Parsel verisi alınamadı");
         
         const geojsonData = await response.json();
@@ -52,10 +52,12 @@ async function loadTKGMParcels() {
             onEachFeature: function (feature, layer) {
                 const props = feature.properties;
                 
-                // startOnParcel için geriye dönük uyumluluk verisi oluştur
+                // Tarlanın gerçek kıvrımlarını (tüm noktaları) Enlem, Boylam formatına çevir
+                const latlngs = feature.geometry.coordinates[0].map(coord => [coord[1], coord[0]]);
+
                 parcels.push({
                     id: props.parsel_id,
-                    coords: feature.geometry.coordinates[0].map(coord => [coord[1], coord[0]]) // [lat, lon] formatına çevir
+                    coords: latlngs // 4 köşeli sahte sınır kutusunu değil, tarlanın gerçek koordinatlarını gönder
                 });
                 const popupContent = `
                     <div style="text-align: center; font-family: 'Inter', sans-serif;">
