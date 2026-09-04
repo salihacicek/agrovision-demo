@@ -110,6 +110,7 @@ def main():
             state.on_video_upload = change_source_callback
             state.on_toggle_play = toggle_play_callback
             state.on_client_frame = client_frame_callback
+            state.on_target_parcel_change = gps_reader.set_waypoints_from_polygon
             
             print("✅ Dashboard entegrasyonu aktif. Metrikler web'e gönderilecek.")
         except ImportError as e:
