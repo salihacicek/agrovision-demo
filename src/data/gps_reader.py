@@ -156,7 +156,7 @@ class GPSReader:
         if not coords or len(coords) < 3:
             return False
             
-        step_meters = 15  # 15 metre aralıklarla tarama (traktör genişliği)
+        step_meters = 25  # 25 metre aralıklarla tarama (traktör genişliği)
         lat_step = step_meters / 111111.0
         
         min_lat = min(p[0] for p in coords)
@@ -248,8 +248,7 @@ class GPSReader:
             # Her tick'te ufak salınım ekle (hep aynı sayıda donmuş gibi görünmesin)
             speed_kmh = self.sim_state['current_speed'] + random.uniform(-0.5, 0.5)
                 
-            # Adım büyüklüğü
-            step_size = 0.000003 * (speed_kmh / 5.0)
+            step_size = 0.000040 * (speed_kmh / 5.0)
             
             target = self.waypoints[self.sim_state['target_idx']]
             d_lat = target[0] - self.sim_state['lat']
