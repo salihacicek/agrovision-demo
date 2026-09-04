@@ -4,7 +4,7 @@ with open('src/dashboard/static/js/main.js', 'r') as f:
     content = f.read()
 
 marker_start = "// --- ÇKS Çiftçi Veritabanı ---"
-marker_end = "function selectFarmer(farmerId)"
+marker_end = "window.selectFarmer = function(farmerId)"
 
 idx_start = content.find(marker_start)
 idx_end = content.find(marker_end)

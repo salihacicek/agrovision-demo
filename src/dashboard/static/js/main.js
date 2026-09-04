@@ -857,27 +857,19 @@ const farmersDb = {
     'osman': {
         name: 'Osman Cingitaş', tc: '12345678901', no: '2025-0158', city: 'Niğde',
         parcels: [
-            { no: '51-113-25-1', ada: '25/1', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Buğday', tarih: '20.07.2026', mapId: 'P1789' },
+            { no: '51-113-25-1', ada: '25/1', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026', mapId: 'P1789' },
             { no: '51-113-25-2', ada: '25/2', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1826' },
             { no: '51-113-25-3', ada: '25/3', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1959' },
-            { no: '51-113-25-4', ada: '25/4', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1986' },
-            { no: '51-115-25-5', ada: '25/5', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026', mapId: 'P2017' },
-            { no: '51-113-25-6', ada: '25/6', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026', mapId: 'P2044' },
-        ]
-    },
-    'ahmet': {
-        name: 'Ahmet Yılmaz', tc: '34567890123', no: '2025-0842', city: 'Konya',
-        parcels: [
-            { no: '42-054-10-1', ada: '10/1', alan: '45.500', malik: 'Ahmet Yılmaz', kayitli: 'Buğday', tarih: '15.08.2026', mapId: 'P2074' },
-            { no: '42-054-10-2', ada: '10/2', alan: '32.100', malik: 'Ahmet Yılmaz', kayitli: 'Arpa', tarih: '15.08.2026', mapId: 'P2093' },
-            { no: '42-054-10-3', ada: '10/3', alan: '18.000', malik: 'Ahmet Yılmaz', kayitli: 'Mısır', tarih: '15.08.2026', mapId: 'P1789' },
+            { no: '51-113-25-4', ada: '25/4', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1986' }
         ]
     },
     'mehmet': {
-        name: 'Mehmet Demir', tc: '98765432109', no: '2025-1105', city: 'Ankara',
+        name: 'Mehmet Yıldız', tc: '98765432109', no: '2025-1105', city: 'Ankara',
         parcels: [
-            { no: '06-112-05-1', ada: '5/1', alan: '60.000', malik: 'Mehmet Demir', kayitli: 'Ayçiçeği', tarih: '01.09.2026', mapId: 'P1826' },
-            { no: '06-112-05-2', ada: '5/2', alan: '12.500', malik: 'Mehmet Demir', kayitli: 'Yulaf', tarih: '01.09.2026', mapId: 'P1959' },
+            { no: '06-112-05-1', ada: '5/1', alan: '60.000', malik: 'Mehmet Yıldız', kayitli: 'Mısır', tarih: '01.09.2026', mapId: 'P2017' },
+            { no: '06-112-05-2', ada: '5/2', alan: '12.500', malik: 'Mehmet Yıldız', kayitli: 'Arpa', tarih: '01.09.2026', mapId: 'P2044' },
+            { no: '06-112-05-3', ada: '5/3', alan: '15.000', malik: 'Mehmet Yıldız', kayitli: 'Buğday', tarih: '01.09.2026', mapId: 'P2074' },
+            { no: '06-112-05-4', ada: '5/4', alan: '18.000', malik: 'Mehmet Yıldız', kayitli: 'Mısır', tarih: '01.09.2026', mapId: 'P2093' }
         ]
     }
 };
