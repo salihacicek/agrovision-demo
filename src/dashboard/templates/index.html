@@ -6,7 +6,7 @@
     <title>Agrovision AI - Hassas Tarım İzleme Paneli</title>
     <!-- Harita için Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="/static/css/style.css?v=17">
+    <link rel="stylesheet" href="/static/css/style.css?v=18">
     <!-- İkonlar için FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -85,39 +85,42 @@
                 
                 <div class="tracker-layout">
                     <!-- Sol Taraf: Harita -->
-                    <div class="map-section card">
-                        <h3 class="card-title"><i class="fa-solid fa-location-crosshairs"></i> Canlı Harita</h3>
+                    <div class="map-section card" style="padding: 10px;">
                         
-                        <!-- Sürücü / Operatör Rozeti (Sol Üst - Harita İçi) -->
-                        <div style="position: absolute; top: 70px; left: 15px; z-index: 1000; background: rgba(255, 255, 255, 0.95); padding: 8px 15px; border-radius: 30px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 1px solid #e2e8f0; font-size: 0.9rem; font-weight: 600; color: #1e293b;">
-                            <div style="width: 32px; height: 32px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-user-astronaut"></i></div>
-                            <div>
-                                <div style="font-size: 0.75rem; color: #64748b; line-height: 1;">Sürücü / Operatör</div>
-                                <div>Ahmet Yılmaz</div>
+                        <div id="map" style="height: 70vh; border-radius: 8px; z-index: 1;"></div>
+                        
+                        <div class="map-controls" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 5px; padding: 0 5px;">
+                            
+                            <!-- Sol Taraf: Sürücü -->
+                            <div style="background: #f8fafc; padding: 6px 15px 6px 6px; border-radius: 30px; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0; font-size: 0.9rem; font-weight: 600; color: #1e293b;">
+                                <div style="width: 36px; height: 36px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-user-astronaut"></i></div>
+                                <div>
+                                    <div style="font-size: 0.75rem; color: #64748b; line-height: 1;">Operatör</div>
+                                    <div style="margin-top: 2px;">Ahmet Yılmaz</div>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Rapor Al Butonu (Sağ Üst - Harita İçi) -->
-                        <button class="btn btn-primary" onclick="downloadReport()" style="position: absolute; top: 15px; right: 15px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.15); font-weight: 600; border-radius: 30px; padding: 10px 20px;">
-                            <i class="fa-solid fa-file-pdf"></i> Rapor Al
-                        </button>
+                            <!-- Orta Kısım: Kontroller -->
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <select id="parcel-dropdown" onchange="if(this.value) startOnParcel(this.value)" style="padding: 10px 15px; border-radius: 30px; border: 1px solid #e2e8f0; background: white; color: #1e293b; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding-right: 35px; background-image: url('data:image/svg+xml;utf8,<svg fill=%22black%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position-x: 100%; background-position-y: 5px;">
+                                    <option value="">🚜 Parsel Seçimi...</option>
+                                    <option value="P1789">P1789 (Ayçiçeği)</option>
+                                    <option value="P1826">P1826 (Mısır)</option>
+                                    <option value="P1959">P1959 (Mısır)</option>
+                                    <option value="P1986">P1986 (Mısır)</option>
+                                    <option value="P2017">P2017 (Mısır)</option>
+                                    <option value="P2044">P2044 (Arpa)</option>
+                                    <option value="P2074">P2074 (Buğday)</option>
+                                    <option value="P2093">P2093 (Mısır)</option>
+                                </select>
+                                <button id="toggle-play-btn" class="control-btn play-btn" onclick="togglePlay()">
+                                    <i class="fa-solid fa-pause"></i> <span>Durdur</span>
+                                </button>
+                            </div>
 
-                        <div id="map" style="height: 65vh; border-radius: 8px; z-index: 1;"></div>
-                        
-                        <div class="map-controls" style="display: flex; gap: 10px; align-items: center; justify-content: center; margin-top: 15px; margin-bottom: 5px;">
-                            <select id="parcel-dropdown" onchange="if(this.value) startOnParcel(this.value)" style="padding: 10px 15px; border-radius: 30px; border: 1px solid #e2e8f0; background: white; color: #1e293b; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding-right: 35px; background-image: url('data:image/svg+xml;utf8,<svg fill=%22black%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position-x: 100%; background-position-y: 5px;">
-                                <option value="">🚜 Parsel Seçimi...</option>
-                                <option value="P1789">P1789 (Ayçiçeği)</option>
-                                <option value="P1826">P1826 (Mısır)</option>
-                                <option value="P1959">P1959 (Mısır)</option>
-                                <option value="P1986">P1986 (Mısır)</option>
-                                <option value="P2017">P2017 (Mısır)</option>
-                                <option value="P2044">P2044 (Arpa)</option>
-                                <option value="P2074">P2074 (Buğday)</option>
-                                <option value="P2093">P2093 (Mısır)</option>
-                            </select>
-                            <button id="toggle-play-btn" class="control-btn play-btn" onclick="togglePlay()">
-                                <i class="fa-solid fa-pause"></i> <span>Durdur</span>
+                            <!-- Sağ Taraf: Rapor Al -->
+                            <button class="btn btn-primary" onclick="downloadReport()" style="box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-weight: 600; border-radius: 30px; padding: 10px 20px;">
+                                <i class="fa-solid fa-file-pdf"></i> Rapor Al
                             </button>
                         </div>
                     </div>
