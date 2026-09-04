@@ -8,7 +8,7 @@ const map = L.map('map', {
     attributionControl: false,
     maxZoom: 22,
     preferCanvas: true  // Tüm katmanlar için canvas kullan
-}).setView([40.2090, 33.0085], 17);
+}).setView([40.0880, 32.9950], 17);
 
 L.control.attribution({prefix: '🇹🇷 Agrovision AI | Harita Sistemi'}).addTo(map);
 
