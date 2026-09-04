@@ -13,7 +13,7 @@ const map = L.map('map', {
 L.control.attribution({prefix: '🇹🇷 Agrovision AI | Harita Sistemi'}).addTo(map);
 
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'TKGM Parsel Verisi &copy; 2026',
+    attribution: 'Tiles &copy; Esri World Imagery',
     maxZoom: 22,
     maxNativeZoom: 18
 }).addTo(map);
