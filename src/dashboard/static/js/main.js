@@ -810,12 +810,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function populateNewTabs() {
     const parselData = [
-        { no: '51-113-25-1', ada: '25/1', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Buğday', tespit: 'Buğday', durum: 'Eşleşiyor', tarih: '20.07.2026 16:00' },
-        { no: '51-113-25-2', ada: '25/2', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Buğday', tespit: 'Mısır', durum: 'Uyumsuz', tarih: '20.07.2026 16:00' },
-        { no: '51-113-25-3', ada: '25/3', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tespit: 'Mısır', durum: 'Eşleşiyor', tarih: '20.07.2026 16:00' },
-        { no: '51-113-25-4', ada: '25/4', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tespit: 'Buğday', durum: 'Uyumsuz', tarih: '20.07.2026 16:00' },
-        { no: '51-115-25-5', ada: '25/5', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tespit: 'Mısır', durum: 'Uyumsuz', tarih: '20.07.2026 16:00' },
-        { no: '51-113-25-6', ada: '25/6', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tespit: 'Ayçiçeği', durum: 'Eşleşiyor', tarih: '20.07.2026 16:00' },
+        { no: '51-113-25-1', ada: '25/1', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Buğday', tarih: '20.07.2026' },
+        { no: '51-113-25-2', ada: '25/2', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
+        { no: '51-113-25-3', ada: '25/3', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
+        { no: '51-113-25-4', ada: '25/4', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
+        { no: '51-115-25-5', ada: '25/5', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026' },
+        { no: '51-113-25-6', ada: '25/6', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026' },
     ];
 
     // 1. Parsel Takip Tablosunu Doldur
@@ -823,9 +823,6 @@ function populateNewTabs() {
     if (tbody) {
         let html = '';
         parselData.forEach(p => {
-            const durumColor = p.durum === 'Eşleşiyor' ? '#22c55e' : '#ef4444';
-            const durumBg = p.durum === 'Eşleşiyor' ? '#dcfce7' : '#fee2e2';
-            
             html += `
                 <tr style="border-bottom: 1px solid #e2e8f0;">
                     <td style="padding: 1rem 1.5rem; color: #1e293b; font-weight: 500;">${p.no}</td>
@@ -833,15 +830,11 @@ function populateNewTabs() {
                     <td style="padding: 1rem 1.5rem; color: #64748b;">${p.alan}</td>
                     <td style="padding: 1rem 1.5rem; color: #64748b;">${p.malik}</td>
                     <td style="padding: 1rem 1.5rem; color: #1e293b; font-weight: 600;">${p.kayitli}</td>
-                    <td style="padding: 1rem 1.5rem; color: #64748b;">${p.tespit}</td>
-                    <td style="padding: 1rem 1.5rem;">
-                        <span style="background: ${durumBg}; color: ${durumColor}; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
-                            <i class="fa-solid fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-right: 4px;"></i>${p.durum}
-                        </span>
-                    </td>
                     <td style="padding: 1rem 1.5rem; color: #64748b;">${p.tarih}</td>
                     <td style="padding: 1rem 1.5rem;">
-                        <button class="btn btn-primary" style="background: #ef4444; border: none; padding: 6px 12px; font-size: 0.85rem;"><i class="fa-solid fa-eye"></i> Detay</button>
+                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.8rem;" onclick="switchTab('tab-arac-takip')">
+                            <i class="fa-solid fa-eye"></i> İncele
+                        </button>
                     </td>
                 </tr>
             `;
