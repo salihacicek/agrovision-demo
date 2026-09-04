@@ -805,24 +805,52 @@ document.addEventListener('DOMContentLoaded', () => {
     switchTab('tab-anasayfa');
 });
 
+// --- ÇKS Çiftçi Veritabanı ---
+const farmersDb = {
+    'osman': {
+        name: 'Osman Cingitaş', tc: '12345678901', no: '2025-0158', city: 'Niğde',
+        parcels: [
+            { no: '51-113-25-1', ada: '25/1', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Buğday', tarih: '20.07.2026' },
+            { no: '51-113-25-2', ada: '25/2', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
+            { no: '51-113-25-3', ada: '25/3', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
+            { no: '51-113-25-4', ada: '25/4', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
+            { no: '51-115-25-5', ada: '25/5', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026' },
+            { no: '51-113-25-6', ada: '25/6', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026' },
+        ]
+    },
+    'ahmet': {
+        name: 'Ahmet Yılmaz', tc: '34567890123', no: '2025-0842', city: 'Konya',
+        parcels: [
+            { no: '42-054-10-1', ada: '10/1', alan: '45.500', malik: 'Ahmet Yılmaz', kayitli: 'Buğday', tarih: '15.08.2026' },
+            { no: '42-054-10-2', ada: '10/2', alan: '32.100', malik: 'Ahmet Yılmaz', kayitli: 'Arpa', tarih: '15.08.2026' },
+            { no: '42-054-10-3', ada: '10/3', alan: '18.000', malik: 'Ahmet Yılmaz', kayitli: 'Mısır', tarih: '15.08.2026' },
+        ]
+    },
+    'mehmet': {
+        name: 'Mehmet Demir', tc: '98765432109', no: '2025-1105', city: 'Ankara',
+        parcels: [
+            { no: '06-112-05-1', ada: '5/1', alan: '60.000', malik: 'Mehmet Demir', kayitli: 'Ayçiçeği', tarih: '01.09.2026' },
+            { no: '06-112-05-2', ada: '5/2', alan: '12.500', malik: 'Mehmet Demir', kayitli: 'Yulaf', tarih: '01.09.2026' },
+        ]
+    }
+};
 
-// --- YENİ SEKMELER İÇİN DOLDURMA FONKSİYONLARI ---
+window.selectFarmer = function(farmerId) {
+    const farmer = farmersDb[farmerId];
+    if (!farmer) return;
 
-function populateNewTabs() {
-    const parselData = [
-        { no: '51-113-25-1', ada: '25/1', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Buğday', tarih: '20.07.2026' },
-        { no: '51-113-25-2', ada: '25/2', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
-        { no: '51-113-25-3', ada: '25/3', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
-        { no: '51-113-25-4', ada: '25/4', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
-        { no: '51-115-25-5', ada: '25/5', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026' },
-        { no: '51-113-25-6', ada: '25/6', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026' },
-    ];
+    // 1. Çiftçi Bilgilerini Güncelle
+    document.getElementById('cks-farmer-name').textContent = farmer.name;
+    document.getElementById('cks-farmer-tc').textContent = farmer.tc;
+    document.getElementById('cks-farmer-no').textContent = farmer.no;
+    document.getElementById('cks-farmer-city').textContent = farmer.city;
+    document.getElementById('cks-farmer-count').textContent = farmer.parcels.length;
 
-    // 1. Parsel Takip Tablosunu Doldur
+    // 2. Parsel Tablosunu Güncelle
     const tbody = document.getElementById('parsel-listesi-body');
     if (tbody) {
         let html = '';
-        parselData.forEach(p => {
+        farmer.parcels.forEach(p => {
             html += `
                 <tr style="border-bottom: 1px solid #e2e8f0;">
                     <td style="padding: 1rem 1.5rem; color: #1e293b; font-weight: 500;">${p.no}</td>
@@ -841,99 +869,14 @@ function populateNewTabs() {
         });
         tbody.innerHTML = html;
     }
+}
 
-    // 2. ÇKS Grid Doldur
-    const cksGrid = document.getElementById('cks-grid');
-    if (cksGrid) {
-        let gridHtml = '';
-        parselData.forEach(p => {
-            const durumText = p.durum === 'Eşleşiyor' ? 'Aktif' : 'Denetim';
-            const durumColor = p.durum === 'Eşleşiyor' ? '#22c55e' : '#ef4444';
-            const durumBg = p.durum === 'Eşleşiyor' ? '#dcfce7' : '#fee2e2';
-            
-            gridHtml += `
-                <div style="background: white; border: 1px solid #ef4444; border-radius: 12px; padding: 1.5rem; position: relative;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem; margin-bottom: 1rem;">
-                        <h4 style="margin: 0; font-size: 1.1rem; color: #1e293b;"><i class="fa-solid fa-map" style="color: #64748b; margin-right: 8px;"></i>${p.no}</h4>
-                        <span style="background: ${durumBg}; color: ${durumColor}; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">${durumText}</span>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-size: 0.9rem;">
-                        <span style="color: #64748b;">Ada / Parsel:</span>
-                        <strong style="color: #1e293b;">${p.ada}</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-size: 0.9rem;">
-                        <span style="color: #64748b;">Alan:</span>
-                        <strong style="color: #1e293b;">${p.alan} m²</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-size: 0.9rem;">
-                        <span style="color: #64748b;">Kayıtlı Ürün:</span>
-                        <strong style="color: #ef4444;">${p.kayitli}</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-size: 0.9rem;">
-                        <span style="color: #64748b;">Tespit Edilen:</span>
-                        <strong style="color: #1e293b;">${p.tespit}</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                        <span style="color: #64748b;">Konum:</span>
-                        <strong style="color: #1e293b;">Konaklı Köyü</strong>
-                    </div>
-                </div>
-            `;
-        });
-        cksGrid.innerHTML = gridHtml;
-    }
-
-    // 3. Araç Takip Ekranına Araç Listesi Ekle (Mevcut Telemetrinin Altına)
-    const telemetrySection = document.querySelector('.telemetry-section');
-    if (telemetrySection && !document.getElementById('arac-listesi-container')) {
-        const aracListesiHtml = `
-            <div id="arac-listesi-container" class="card" style="margin-top: 1rem; padding: 1.5rem;">
-                <h3 style="margin-bottom: 1rem; font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center;">
-                    Araç Listesi
-                </h3>
-                
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <!-- Araç 1 (Aktif) -->
-                    <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
-                            <div style="font-weight: 700; color: #1e293b; font-size: 1.1rem;"><i class="fa-solid fa-truck-tractor" style="color: #64748b; margin-right: 8px;"></i>TR-51-HC-402</div>
-                            <span style="background: #dcfce7; color: #22c55e; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Hasat Yapıyor</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px; color: #ef4444; font-size: 0.9rem;">
-                            <i class="fa-regular fa-user"></i> <span>Operatör: <strong style="color: #1e293b;">Mehmet Demir</strong></span>
-                        </div>
-                    </div>
-                    
-                    <!-- Araç 2 (Bakımda) -->
-                    <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
-                            <div style="font-weight: 700; color: #1e293b; font-size: 1.1rem;"><i class="fa-solid fa-truck-tractor" style="color: #64748b; margin-right: 8px;"></i>TR-51-HC-511</div>
-                            <span style="background: #fee2e2; color: #ef4444; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Bakımda</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px; color: #ef4444; font-size: 0.9rem;">
-                            <i class="fa-regular fa-user"></i> <span>Operatör: <strong style="color: #1e293b;">Ali Kaya</strong></span>
-                        </div>
-                    </div>
-
-                    <!-- Araç 3 (Beklemede) -->
-                    <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
-                            <div style="font-weight: 700; color: #1e293b; font-size: 1.1rem;"><i class="fa-solid fa-truck-tractor" style="color: #64748b; margin-right: 8px;"></i>TR-51-HC-620</div>
-                            <span style="background: #fef3c7; color: #d97706; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Beklemede</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px; color: #ef4444; font-size: 0.9rem;">
-                            <i class="fa-regular fa-user"></i> <span>Operatör: <strong style="color: #1e293b;">Hasan Yücel</strong></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        telemetrySection.insertAdjacentHTML('beforeend', aracListesiHtml);
-    }
+window.populateNewTabs = function() {
+    // Sayfa ilk açıldığında Osman Cingitaş'ı yükle
+    window.selectFarmer('osman');
 }
 
 // Dom yüklendikten veya js scripti çalıştığında hemen doldur
-populateNewTabs();
+window.populateNewTabs();
 
 document.addEventListener('DOMContentLoaded', () => { fetch('/reset_simulation', { method: 'POST' }).then(() => { routeSegments.forEach(seg => map.removeLayer(seg)); routeSegments = []; currentSegment = null; lastRouteLatLng = null; window.isTeleporting = true; }); });
