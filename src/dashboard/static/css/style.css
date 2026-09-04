@@ -1157,12 +1157,14 @@ body {
 
 .telemetry-section {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
 }
 
 .chart-card {
-    grid-column: 1 / -1;
+    grid-column: auto;
+    height: 100% !important;
+    min-height: 140px;
 }
 
 .status-card {
