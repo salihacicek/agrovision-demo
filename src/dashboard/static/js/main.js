@@ -111,7 +111,17 @@ window.inceleParsel = function(mapId) {
     switchTab('tab-arac-takip');
     const dropdown = document.getElementById('parcel-dropdown');
     if (dropdown) dropdown.value = mapId;
-    window.startOnParcel(mapId);
+    
+    if (parcelGeoJsonLayer) {
+        parcelGeoJsonLayer.eachLayer(function(l) {
+            parcelGeoJsonLayer.resetStyle(l);
+            if (l.feature.properties.parsel_id === mapId) {
+                l.setStyle({ fillOpacity: 0.7, weight: 4, color: '#eab308' });
+                map.flyToBounds(l.getBounds(), { padding: [50, 50], duration: 1.5 });
+                setTimeout(() => { l.openPopup(); }, 1500); // Popup aç
+            }
+        });
+    }
 }
 
 window.startOnParcel = function(parcelId) {
@@ -651,7 +661,16 @@ function downloadPdfReport(btnElement) {
     btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> İndiriliyor...';
     btnElement.disabled = true;
     
-    fetch('/generate_report', { method: 'POST' })
+    
+    const speedArr = trendChart.data.datasets[0].data.filter(s => s > 0);
+    const avgSpeed = speedArr.length > 0 ? parseFloat((speedArr.reduce((a, b) => a + b, 0) / speedArr.length).toFixed(1)) : 0.0;
+    
+    fetch('/generate_report', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ avg_speed: avgSpeed })
+    })
+
         .then(response => {
             if (!response.ok) throw new Error("Rapor oluşturulamadı");
             return response.blob();

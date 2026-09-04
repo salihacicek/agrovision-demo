@@ -373,8 +373,11 @@ from fastapi.responses import FileResponse
 from src.reporting.pdf_report import PDFReportGenerator
 from datetime import datetime
 
+class ReportRequest(BaseModel):
+    avg_speed: float = 0.0
+
 @app.post("/generate_report")
-async def generate_report_endpoint():
+async def generate_report_endpoint(req: ReportRequest):
     try:
         # Mevcut State verilerini kullanarak rapor oluştur
         session_data = {
@@ -384,7 +387,7 @@ async def generate_report_endpoint():
             'declared_crop': getattr(state, 'declaration', 'Bilinmiyor'),
             'harvest_date': datetime.now().strftime('%Y-%m-%d'),
             'timestamp': datetime.now().isoformat(),
-            'avg_speed': round(getattr(state, 'last_speed', 0.0), 1),
+            'avg_speed': req.avg_speed if req.avg_speed > 0 else round(getattr(state, 'last_speed', 0.0), 1),
             'avg_temp': round(getattr(state, 'last_temp', 0.0), 1),
             'avg_moisture': round(getattr(state, 'last_humidity', 0.0), 1),
             'estimated_yield': 450,
