@@ -1119,8 +1119,10 @@ body {
 }
 
 .map-section {
+    position: relative;
     display: flex;
     flex-direction: column;
+    min-height: 65vh;
     height: 100%;
 }
 
