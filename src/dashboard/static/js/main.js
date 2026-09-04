@@ -106,9 +106,28 @@ loadTKGMParcels();
 
 
 // Yeni parsele geçildiğinde hasat rotasını temizlemek için global fonksiyon
+window.inceleParsel = function(mapId) {
+    if(!mapId) return;
+    switchTab('tab-arac-takip');
+    const dropdown = document.getElementById('parcel-dropdown');
+    if (dropdown) dropdown.value = mapId;
+    window.startOnParcel(mapId);
+}
+
 window.startOnParcel = function(parcelId) {
     const parcel = parcels.find(p => p.id === parcelId);
     if (!parcel) return;
+
+    // Renklendirme ve stil sıfırlama (highlight)
+    if (parcelGeoJsonLayer) {
+        parcelGeoJsonLayer.eachLayer(function(l) {
+            parcelGeoJsonLayer.resetStyle(l);
+            if (l.feature.properties.parsel_id === parcelId) {
+                l.setStyle({ fillOpacity: 0.7, weight: 4, color: '#eab308' }); // sarı highlight
+                map.flyToBounds(l.getBounds(), { padding: [50, 50], duration: 1.5 });
+            }
+        });
+    }
 
     // Haritadaki mevcut rotayı temizle
     routeSegments.forEach(seg => map.removeLayer(seg));
@@ -567,7 +586,8 @@ function downloadReport() {
     const btn = document.querySelector('.tracker-header .btn-primary');
     
     // Güncel verileri DOM'dan alalım (veya default)
-    const speed = document.getElementById('current-speed') ? document.getElementById('current-speed').textContent : "0.0";
+    const speedArr = trendChart.data.datasets[0].data.filter(s => s > 0);
+    const speed = speedArr.length > 0 ? (speedArr.reduce((a, b) => a + b, 0) / speedArr.length).toFixed(1) : "0.0";
     const temp = document.getElementById('temp-val') ? document.getElementById('temp-val').textContent : "32.0 °C";
     const moisture = document.getElementById('crop-moisture-val') ? document.getElementById('crop-moisture-val').textContent : "%12.5";
     const donum = currentHarvestedDönüm;
@@ -810,27 +830,27 @@ const farmersDb = {
     'osman': {
         name: 'Osman Cingitaş', tc: '12345678901', no: '2025-0158', city: 'Niğde',
         parcels: [
-            { no: '51-113-25-1', ada: '25/1', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Buğday', tarih: '20.07.2026' },
-            { no: '51-113-25-2', ada: '25/2', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
-            { no: '51-113-25-3', ada: '25/3', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
-            { no: '51-113-25-4', ada: '25/4', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026' },
-            { no: '51-115-25-5', ada: '25/5', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026' },
-            { no: '51-113-25-6', ada: '25/6', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026' },
+            { no: '51-113-25-1', ada: '25/1', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Buğday', tarih: '20.07.2026', mapId: 'P1789' },
+            { no: '51-113-25-2', ada: '25/2', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1826' },
+            { no: '51-113-25-3', ada: '25/3', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1959' },
+            { no: '51-113-25-4', ada: '25/4', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1986' },
+            { no: '51-115-25-5', ada: '25/5', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026', mapId: 'P2017' },
+            { no: '51-113-25-6', ada: '25/6', alan: '25.000', malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026', mapId: 'P2044' },
         ]
     },
     'ahmet': {
         name: 'Ahmet Yılmaz', tc: '34567890123', no: '2025-0842', city: 'Konya',
         parcels: [
-            { no: '42-054-10-1', ada: '10/1', alan: '45.500', malik: 'Ahmet Yılmaz', kayitli: 'Buğday', tarih: '15.08.2026' },
-            { no: '42-054-10-2', ada: '10/2', alan: '32.100', malik: 'Ahmet Yılmaz', kayitli: 'Arpa', tarih: '15.08.2026' },
-            { no: '42-054-10-3', ada: '10/3', alan: '18.000', malik: 'Ahmet Yılmaz', kayitli: 'Mısır', tarih: '15.08.2026' },
+            { no: '42-054-10-1', ada: '10/1', alan: '45.500', malik: 'Ahmet Yılmaz', kayitli: 'Buğday', tarih: '15.08.2026', mapId: 'P2074' },
+            { no: '42-054-10-2', ada: '10/2', alan: '32.100', malik: 'Ahmet Yılmaz', kayitli: 'Arpa', tarih: '15.08.2026', mapId: 'P2093' },
+            { no: '42-054-10-3', ada: '10/3', alan: '18.000', malik: 'Ahmet Yılmaz', kayitli: 'Mısır', tarih: '15.08.2026', mapId: 'P1789' },
         ]
     },
     'mehmet': {
         name: 'Mehmet Demir', tc: '98765432109', no: '2025-1105', city: 'Ankara',
         parcels: [
-            { no: '06-112-05-1', ada: '5/1', alan: '60.000', malik: 'Mehmet Demir', kayitli: 'Ayçiçeği', tarih: '01.09.2026' },
-            { no: '06-112-05-2', ada: '5/2', alan: '12.500', malik: 'Mehmet Demir', kayitli: 'Yulaf', tarih: '01.09.2026' },
+            { no: '06-112-05-1', ada: '5/1', alan: '60.000', malik: 'Mehmet Demir', kayitli: 'Ayçiçeği', tarih: '01.09.2026', mapId: 'P1826' },
+            { no: '06-112-05-2', ada: '5/2', alan: '12.500', malik: 'Mehmet Demir', kayitli: 'Yulaf', tarih: '01.09.2026', mapId: 'P1959' },
         ]
     }
 };
@@ -860,7 +880,7 @@ window.selectFarmer = function(farmerId) {
                     <td style="padding: 1rem 1.5rem; color: #1e293b; font-weight: 600;">${p.kayitli}</td>
                     <td style="padding: 1rem 1.5rem; color: #64748b;">${p.tarih}</td>
                     <td style="padding: 1rem 1.5rem;">
-                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.8rem;" onclick="switchTab('tab-arac-takip')">
+                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.8rem;" onclick="window.inceleParsel('${p.mapId}')">
                             <i class="fa-solid fa-eye"></i> İncele
                         </button>
                     </td>
