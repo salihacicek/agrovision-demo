@@ -208,6 +208,8 @@ class GPSReader:
                 self.last_lat = self.sim_state['lat']
                 self.last_lon = self.sim_state['lon']
                 self.current_data.lat = self.sim_state['lat']
+                self.total_distance_m = 0.0
+                self.visited_polygons = []
                 self.current_data.lon = self.sim_state['lon']
         
             self.is_paused = False

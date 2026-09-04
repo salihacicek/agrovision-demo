@@ -153,6 +153,19 @@ window.startOnParcel = function(parcelId) {
     currentSegment = null;
     lastRouteLatLng = null;
     window.isTeleporting = true;
+    
+    // Telemetri grafiklerini ve sayaçlarını sıfırla
+    if (typeof trendChart !== 'undefined') {
+        trendChart.data.labels = [];
+        trendChart.data.datasets[0].data = [];
+        trendChart.update();
+    }
+    if (document.getElementById('donum-val')) {
+        document.getElementById('donum-val').textContent = "0.0 Dönüm";
+    }
+    if (typeof currentHarvestedDönüm !== 'undefined') {
+        currentHarvestedDönüm = "0.0";
+    }
 
     // Backend'e yeni parselin koordinatlarını gönder
     fetch('/set_target_parcel', {
