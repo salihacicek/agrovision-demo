@@ -21,5 +21,4 @@ RUN chmod -R 777 /app
 # Hugging Face Spaces varsayılan portu
 EXPOSE 7860
 
-# Uygulamayı başlat
-CMD ["python", "scripts/run_live.py", "--dashboard", "--port", "7860", "--model", "runs/detect/runs/detect/agro_train/weights/best.pt", "--source", "none"]
+CMD ["python", "scripts/run_live.py", "--dashboard", "--port", "7860", "--model", "runs/detect/runs/detect/agro_train/weights/best.pt", "--source", "none", "--sim-gps"]

@@ -38,7 +38,7 @@ def main():
     session_manager = SessionManager(db)
     
     # 2. Donanım Arayüzleri
-    gps_reader = GPSReader(simulated=args.sim_gps)
+    gps_reader = GPSReader(simulated=True) # Always simulate for demo
     gps_reader.start()
 
     # Kamera kaynağını parse et (integer ise int'e çevir)
