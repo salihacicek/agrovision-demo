@@ -875,6 +875,17 @@ const farmersDb = {
 };
 
 window.selectFarmer = function(farmerId) {
+    if (!farmerId || farmerId === "") {
+        // Çiftçi seçilmedi, boş ekran göster
+        document.getElementById('cks-farmer-name').textContent = "Lütfen bir çiftçi seçin";
+        document.getElementById('cks-farmer-tc').textContent = "-";
+        document.getElementById('cks-farmer-no').textContent = "-";
+        document.getElementById('cks-farmer-city').textContent = "-";
+        document.getElementById('cks-farmer-count').textContent = "0 Parsel Kaydı";
+        const tbody = document.getElementById('cks-parcels-tbody');
+        if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:2rem;">Görüntülenecek parsel bulunamadı.</td></tr>`;
+        return;
+    }
     const farmer = farmersDb[farmerId];
     if (!farmer) return;
 
@@ -912,7 +923,7 @@ window.selectFarmer = function(farmerId) {
 
 window.populateNewTabs = function() {
     // Sayfa ilk açıldığında Osman Cingitaş'ı yükle
-    window.selectFarmer('osman');
+    window.selectFarmer(''); // Boş başlat
 }
 
 // Dom yüklendikten veya js scripti çalıştığında hemen doldur
