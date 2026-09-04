@@ -925,10 +925,9 @@ body {
    Harita Kontrol Butonu (Başlat / Durdur)
    ================================================ */
 .map-controls {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
     z-index: 1000;
 }
 
