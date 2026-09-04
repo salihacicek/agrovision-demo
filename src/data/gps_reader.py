@@ -156,38 +156,42 @@ class GPSReader:
             return False
             
         try:
+            import math
             min_lat = min(p[0] for p in coords)
-            max_lat = max(p[0] for p in coords)
-            # Traktör/Biçerdöver tabla genişliği genelde 6 metredir
-            lat_step = 6 / 111111.0
+            min_lon = min(p[1] for p in coords)
+            max_lon = max(p[1] for p in coords)
+            
+            # Traktör/Biçerdöver tabla genişliği 6 metre. 
+            # Türkiye enlemlerinde 1 derece boylam yaklaşık 85000 metredir.
+            lon_step = 6 / 85000.0
             
             new_waypoints = []
-            current_lat = min_lat + lat_step/2
+            current_lon = min_lon + lon_step/2
             direction = 1
             
-            while current_lat < max_lat:
+            while current_lon < max_lon:
                 intersections = []
                 for i in range(len(coords)):
                     p1 = coords[i]
                     p2 = coords[(i+1)%len(coords)]
-                    if min(p1[0], p2[0]) < current_lat <= max(p1[0], p2[0]):
-                        if p2[0] != p1[0]:
-                            lon = p1[1] + (current_lat - p1[0]) * (p2[1] - p1[1]) / (p2[0] - p1[0])
-                            intersections.append(lon)
+                    if min(p1[1], p2[1]) < current_lon <= max(p1[1], p2[1]):
+                        if p2[1] != p1[1]:
+                            lat = p1[0] + (current_lon - p1[1]) * (p2[0] - p1[0]) / (p2[1] - p1[1])
+                            intersections.append(lat)
             
                 intersections.sort()
                 for i in range(0, len(intersections)-1, 2):
-                    lon1 = intersections[i]
-                    lon2 = intersections[i+1]
+                    lat1 = intersections[i]
+                    lat2 = intersections[i+1]
                     if direction == 1:
-                        new_waypoints.append([current_lat, lon1])
-                        new_waypoints.append([current_lat, lon2])
+                        new_waypoints.append([lat1, current_lon])
+                        new_waypoints.append([lat2, current_lon])
                     else:
-                        new_waypoints.append([current_lat, lon2])
-                        new_waypoints.append([current_lat, lon1])
+                        new_waypoints.append([lat2, current_lon])
+                        new_waypoints.append([lat1, current_lon])
                         
                 direction *= -1
-                current_lat += lat_step
+                current_lon += lon_step
                 
             if not new_waypoints:
                 new_waypoints = coords
