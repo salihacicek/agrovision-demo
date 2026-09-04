@@ -155,78 +155,72 @@ class GPSReader:
         if not coords or len(coords) < 3:
             return False
             
-        step_meters = 25  # 25 metre aralıklarla tarama (traktör genişliği)
-        lat_step = step_meters / 111111.0
-        
-        min_lat = min(p[0] for p in coords)
-        max_lat = max(p[0] for p in coords)
-        
-        new_waypoints = []
-        current_lat = min_lat + lat_step/2
-        direction = 1
-        
-        while current_lat < max_lat:
-            intersections = []
-            for i in range(len(coords)):
-                p1 = coords[i]
-                p2 = coords[(i+1)%len(coords)]
-                if min(p1[0], p2[0]) < current_lat <= max(p1[0], p2[0]):
-                    if p2[0] != p1[0]:
-                        lon = p1[1] + (current_lat - p1[0]) * (p2[1] - p1[1]) / (p2[0] - p1[0])
-                        intersections.append(lon)
+        try:
+            min_lat = min(p[0] for p in coords)
+            max_lat = max(p[0] for p in coords)
+            # Traktör/Biçerdöver tabla genişliği genelde 6 metredir
+            lat_step = 6 / 111111.0
             
-            intersections.sort()
-            for i in range(0, len(intersections)-1, 2):
-                lon1 = intersections[i]
-                lon2 = intersections[i+1]
-                if direction == 1:
-                    new_waypoints.append([current_lat, lon1])
-                    new_waypoints.append([current_lat, lon2])
-                else:
-                    new_waypoints.append([current_lat, lon2])
-                    new_waypoints.append([current_lat, lon1])
-                    
-            direction *= -1
-            current_lat += lat_step
+            new_waypoints = []
+            current_lat = min_lat + lat_step/2
+            direction = 1
             
-        if not new_waypoints:
-            new_waypoints = coords
+            while current_lat < max_lat:
+                intersections = []
+                for i in range(len(coords)):
+                    p1 = coords[i]
+                    p2 = coords[(i+1)%len(coords)]
+                    if min(p1[0], p2[0]) < current_lat <= max(p1[0], p2[0]):
+                        if p2[0] != p1[0]:
+                            lon = p1[1] + (current_lat - p1[0]) * (p2[1] - p1[1]) / (p2[0] - p1[0])
+                            intersections.append(lon)
+            
+                intersections.sort()
+                for i in range(0, len(intersections)-1, 2):
+                    lon1 = intersections[i]
+                    lon2 = intersections[i+1]
+                    if direction == 1:
+                        new_waypoints.append([current_lat, lon1])
+                        new_waypoints.append([current_lat, lon2])
+                    else:
+                        new_waypoints.append([current_lat, lon2])
+                        new_waypoints.append([current_lat, lon1])
+                        
+                direction *= -1
+                current_lat += lat_step
                 
-        with self._lock:
-            self.waypoints = new_waypoints
-            self.sim_state = {
-                'lat': self.waypoints[0][0],
-                'lon': self.waypoints[0][1],
-                'target_idx': 1,
-                'speed_timer': 0,
-                'current_speed': 6.0
-            }
-            self.last_lat = self.sim_state['lat']
-            self.last_lon = self.sim_state['lon']
-            self.current_data.lat = self.sim_state['lat']
-            self.current_data.lon = self.sim_state['lon']
-    
-        self.is_paused = False
-
-        return True
-
-    def _generate_fake_data(self):
-        """Simülasyon için sahte veriler üretir."""
-        # Parsel 157'nin tam içinde kalan, sağ üst köşeden başlayan zigzag waypointler
-        # (Poligon ray-casting ile hesaplandı, kenarlardan taşmaz)
-        with self._lock:
-            if not hasattr(self, 'sim_state'):
+            if not new_waypoints:
+                new_waypoints = coords
+                    
+            with self._lock:
+                self.waypoints = new_waypoints
                 self.sim_state = {
                     'lat': self.waypoints[0][0],
                     'lon': self.waypoints[0][1],
                     'target_idx': 1,
                     'speed_timer': 0,
-                    'current_speed': random.uniform(5.0, 7.5)
+                    'current_speed': 6.0
                 }
-                self.current_data.lat = self.sim_state['lat']
-                self.current_data.lon = self.sim_state['lon']
                 self.last_lat = self.sim_state['lat']
                 self.last_lon = self.sim_state['lon']
+                self.current_data.lat = self.sim_state['lat']
+                self.current_data.lon = self.sim_state['lon']
+        
+            self.is_paused = False
+
+            return True
+        except:
+            return False
+
+    def _generate_fake_data(self):
+        """Simülasyon için sahte veriler üretir."""
+        with self._lock:
+            if self.sim_state['target_idx'] < len(self.waypoints):
+                pass
+            else:
+                self.is_paused = True
+                self.current_data.speed_knots = 0.0
+                return
 
             # Hızın saniyeler boyunca sabit kalması (Barkod görünümünü engellemek için)
             self.sim_state['speed_timer'] -= 1
@@ -247,7 +241,9 @@ class GPSReader:
             # Her tick'te ufak salınım ekle (hep aynı sayıda donmuş gibi görünmesin)
             speed_kmh = self.sim_state['current_speed'] + random.uniform(-0.5, 0.5)
                 
-            step_size = 0.000040 * (speed_kmh / 5.0)
+            # km/h'yi m/s'ye çevirip, adım büyüklüğünü derece cinsinden hesapla
+            speed_ms = speed_kmh / 3.6
+            step_size = speed_ms / 111111.0
             
             target = self.waypoints[self.sim_state['target_idx']]
             d_lat = target[0] - self.sim_state['lat']
