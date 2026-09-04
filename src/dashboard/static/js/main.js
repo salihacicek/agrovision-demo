@@ -112,6 +112,14 @@ window.inceleParsel = function(mapId) {
     const dropdown = document.getElementById('parcel-dropdown');
     if (dropdown) dropdown.value = mapId;
     
+    // Eski rotaları sil
+    if (typeof routeSegments !== 'undefined') {
+        routeSegments.forEach(seg => map.removeLayer(seg));
+        routeSegments = [];
+    }
+    if (typeof currentSegment !== 'undefined') currentSegment = null;
+    if (typeof lastRouteLatLng !== 'undefined') lastRouteLatLng = null;
+    
     if (parcelGeoJsonLayer) {
         parcelGeoJsonLayer.eachLayer(function(l) {
             parcelGeoJsonLayer.resetStyle(l);

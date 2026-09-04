@@ -5,10 +5,10 @@
             "type": "Feature",
             "properties": {
                 "parsel_id": "P1789",
-                "ada_no": "176",
-                "parsel_no": "1789",
-                "malik_adi": "Mehmet Demir",
-                "alan_donum": 7.57,
+                "ada_no": 25,
+                "parsel_no": 1,
+                "malik_adi": "Osman Cingita\u015f",
+                "alan_donum": 25.0,
                 "urun_tipi": "Ay\u00e7i\u00e7e\u011fi"
             },
             "geometry": {
@@ -51,11 +51,11 @@
             "type": "Feature",
             "properties": {
                 "parsel_id": "P1826",
-                "ada_no": "119",
-                "parsel_no": "1826",
-                "malik_adi": "Ay\u015fe \u015eahin",
-                "alan_donum": 5.9,
-                "urun_tipi": "Mısır"
+                "ada_no": 25,
+                "parsel_no": 2,
+                "malik_adi": "Osman Cingita\u015f",
+                "alan_donum": 25.0,
+                "urun_tipi": "M\u0131s\u0131r"
             },
             "geometry": {
                 "type": "Polygon",
@@ -105,11 +105,11 @@
             "type": "Feature",
             "properties": {
                 "parsel_id": "P1959",
-                "ada_no": "159",
-                "parsel_no": "1959",
-                "malik_adi": "Mehmet Demir",
-                "alan_donum": 6.4,
-                "urun_tipi": "Mısır"
+                "ada_no": 25,
+                "parsel_no": 3,
+                "malik_adi": "Osman Cingita\u015f",
+                "alan_donum": 25.0,
+                "urun_tipi": "M\u0131s\u0131r"
             },
             "geometry": {
                 "type": "Polygon",
@@ -171,10 +171,10 @@
             "type": "Feature",
             "properties": {
                 "parsel_id": "P1986",
-                "ada_no": "130",
-                "parsel_no": "1986",
-                "malik_adi": "Mehmet Demir",
-                "alan_donum": 5.2,
+                "ada_no": 25,
+                "parsel_no": 4,
+                "malik_adi": "Osman Cingita\u015f",
+                "alan_donum": 25.0,
                 "urun_tipi": "M\u0131s\u0131r"
             },
             "geometry": {
@@ -217,11 +217,11 @@
             "type": "Feature",
             "properties": {
                 "parsel_id": "P2017",
-                "ada_no": "142",
-                "parsel_no": "2017",
-                "malik_adi": "Ali Kaya",
-                "alan_donum": 6.42,
-                "urun_tipi": "Mısır"
+                "ada_no": 5,
+                "parsel_no": 1,
+                "malik_adi": "Mehmet Y\u0131ld\u0131z",
+                "alan_donum": 60.0,
+                "urun_tipi": "M\u0131s\u0131r"
             },
             "geometry": {
                 "type": "Polygon",
@@ -279,10 +279,10 @@
             "type": "Feature",
             "properties": {
                 "parsel_id": "P2044",
-                "ada_no": "127",
-                "parsel_no": "2044",
-                "malik_adi": "Ahmet Y\u0131lmaz",
-                "alan_donum": 4.85,
+                "ada_no": 5,
+                "parsel_no": 2,
+                "malik_adi": "Mehmet Y\u0131ld\u0131z",
+                "alan_donum": 12.5,
                 "urun_tipi": "Arpa"
             },
             "geometry": {
@@ -329,10 +329,10 @@
             "type": "Feature",
             "properties": {
                 "parsel_id": "P2074",
-                "ada_no": "168",
-                "parsel_no": "2074",
-                "malik_adi": "Mehmet Demir",
-                "alan_donum": 6.93,
+                "ada_no": 5,
+                "parsel_no": 3,
+                "malik_adi": "Mehmet Y\u0131ld\u0131z",
+                "alan_donum": 15.0,
                 "urun_tipi": "Bu\u011fday"
             },
             "geometry": {
@@ -383,11 +383,11 @@
             "type": "Feature",
             "properties": {
                 "parsel_id": "P2093",
-                "ada_no": "119",
-                "parsel_no": "2093",
-                "malik_adi": "Ali Kaya",
-                "alan_donum": 5.47,
-                "urun_tipi": "Mısır"
+                "ada_no": 5,
+                "parsel_no": 4,
+                "malik_adi": "Mehmet Y\u0131ld\u0131z",
+                "alan_donum": 18.0,
+                "urun_tipi": "M\u0131s\u0131r"
             },
             "geometry": {
                 "type": "Polygon",
