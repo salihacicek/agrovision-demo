@@ -60,11 +60,10 @@ class GPSReader:
         self.serial_conn = None
         self.last_lat = None
         self.last_lon = None
-
+        default_coords = [[40.088029, 32.992823], [40.086806, 32.995559], [40.086264, 32.995076], [40.086953, 32.993553], [40.087241, 32.992898], [40.087405, 32.992415], [40.088029, 32.992823]]
+        self.waypoints = [default_coords[0]]
         self.is_paused = False
-        self.waypoints = [
-            (40.0880, 32.9950)
-        ]
+        self.set_waypoints_from_polygon(default_coords)
 
 
 
