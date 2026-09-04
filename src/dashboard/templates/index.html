@@ -174,77 +174,73 @@
             
             <!-- ÇKS SEKMESİ (BİRLEŞTİRİLMİŞ) -->
             <div id="tab-cks" class="tab-pane">
-                <div style="margin-bottom: 1.5rem;">
-                    <h2 style="margin: 0; margin-bottom: 1rem; color: #1e293b; font-size: 1.5rem;"><i class="fa-solid fa-address-book" style="color: #64748b; margin-right: 10px;"></i> ÇKS Sorgulama</h2>
-                    
-                    <!-- Çiftçi Listesi (Liste Görünümü) -->
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
-                        <div onclick="selectFarmer('osman')" style="cursor:pointer; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display:flex; align-items:center; gap: 1rem; transition: all 0.2s;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='#e2e8f0'">
-                            <div style="width: 48px; height: 48px; background: #10b981; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"><i class="fa-solid fa-user"></i></div>
-                            <div>
-                                <h3 style="margin:0; font-size:1.1rem; color:#1e293b;">Osman Cingitaş</h3>
-                                <div style="font-size:0.85rem; color:#64748b; margin-top:4px;"><i class="fa-solid fa-location-dot"></i> Niğde &nbsp;&bull;&nbsp; 4 Parsel</div>
-                            </div>
-                        </div>
-                        <div onclick="selectFarmer('mehmet')" style="cursor:pointer; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display:flex; align-items:center; gap: 1rem; transition: all 0.2s;" onmouseover="this.style.borderColor='#3b82f6'" onmouseout="this.style.borderColor='#e2e8f0'">
-                            <div style="width: 48px; height: 48px; background: #3b82f6; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;"><i class="fa-solid fa-user"></i></div>
-                            <div>
-                                <h3 style="margin:0; font-size:1.1rem; color:#1e293b;">Mehmet Yıldız</h3>
-                                <div style="font-size:0.85rem; color:#64748b; margin-top:4px;"><i class="fa-solid fa-location-dot"></i> Ankara &nbsp;&bull;&nbsp; 4 Parsel</div>
-                            </div>
-                        </div>
-                    </div>
+                <div style="margin-bottom: 2rem;">
+                    <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Kayıtlı Çiftçiler</h2>
+                    <p style="color: #64748b; margin-top: 5px;">Sisteme kayıtlı çiftçileri ve onlara ait parselleri görüntüleyin.</p>
                 </div>
-
-                <div class="card" style="display: flex; align-items: center; justify-content: space-between; padding: 2rem; margin-bottom: 2rem; border-radius: 12px;">
-                    <div style="display: flex; align-items: center; gap: 1.5rem;">
-                        <div style="width: 80px; height: 80px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
-                            <i class="fa-regular fa-user"></i>
-                        </div>
-                        <div>
-                            <h2 id="cks-farmer-name" style="margin: 0 0 10px 0; font-size: 1.8rem; color: #1e293b;">Osman Cingitaş</h2>
-                            <div style="display: flex; gap: 1.5rem; color: #64748b; font-size: 0.9rem;">
-                                <span><i class="fa-regular fa-id-card"></i> T.C.: <span id="cks-farmer-tc">12345678901</span></span>
-                                <span><i class="fa-solid fa-file-contract" style="color:#10b981;"></i> ÇKS No: <span id="cks-farmer-no">2025-0158</span></span>
-                                <span><i class="fa-solid fa-location-dot" style="color:#10b981;"></i> <span id="cks-farmer-city">Niğde</span></span>
-                                <span><i class="fa-solid fa-layer-group" style="color:#10b981;"></i> <span id="cks-farmer-count">6</span> Parsel Kaydı</span>
-                            </div>
-                            <div style="margin-top: 15px;">
-                                <span style="background: #22c55e; color: white; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
-                                    <i class="fa-solid fa-check"></i> ÇKS Belgesi Aktif
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <button class="btn btn-primary" style="background: #10b981; border: none; padding: 10px 20px; border-radius: 8px;"><i class="fa-solid fa-plus"></i> Yeni Parsel Ekle</button>
-                    </div>
-                </div>
-
-                <h3 style="margin-bottom: 1rem; color: #334155; font-size: 1.2rem; display: flex; align-items: center; gap: 10px;">
-                    <i class="fa-solid fa-map-location-dot"></i> ÇKS'ye Kayıtlı Parseller Listesi
-                </h3>
-                <hr style="border: none; border-top: 1px solid #10b981; margin-bottom: 1.5rem;">
-
-                <div class="card" style="padding: 0; overflow: hidden;">
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                
+                <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 2rem;">
+                    <table style="width: 100%; border-collapse: collapse;">
                         <thead>
-                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Parsel No</th>
-                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Ada/Parsel</th>
-                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Alan (m²)</th>
-                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Malik</th>
-                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">Kayıtlı Ürün</th>
-                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">ÇKS Tarihi</th>
-                                <th style="padding: 1rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem;">İşlem</th>
+                            <tr style="background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 1rem 1.5rem; text-align: left; color: #475569; font-weight: 600;">Çiftçi Adı</th>
+                                <th style="padding: 1rem 1.5rem; text-align: left; color: #475569; font-weight: 600;">TC / ÇKS No</th>
+                                <th style="padding: 1rem 1.5rem; text-align: left; color: #475569; font-weight: 600;">Kayıtlı İl</th>
+                                <th style="padding: 1rem 1.5rem; text-align: right; color: #475569; font-weight: 600;">İşlemler</th>
                             </tr>
                         </thead>
-                        <tbody id="parsel-listesi-body">
-                            <!-- JS ile doldurulacak -->
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #e2e8f0; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f1f5f9'" onmouseout="this.style.backgroundColor='transparent'">
+                                <td style="padding: 1rem 1.5rem; color: #1e293b; font-weight: 600;">Osman Cingitaş<br><span style="font-size: 0.8rem; color: #64748b; font-weight: 400;">4 Parsel Kaydı</span></td>
+                                <td style="padding: 1rem 1.5rem; color: #334155;">12345678901<br><span style="font-size: 0.8rem; color: #64748b;">2025-0158</span></td>
+                                <td style="padding: 1rem 1.5rem; color: #334155;">Niğde</td>
+                                <td style="padding: 1rem 1.5rem; text-align: right;">
+                                    <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="selectFarmer('osman')">
+                                        <i class="fa-solid fa-folder-open"></i> Parselleri Gör
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f1f5f9'" onmouseout="this.style.backgroundColor='transparent'">
+                                <td style="padding: 1rem 1.5rem; color: #1e293b; font-weight: 600;">Mehmet Yıldız<br><span style="font-size: 0.8rem; color: #64748b; font-weight: 400;">4 Parsel Kaydı</span></td>
+                                <td style="padding: 1rem 1.5rem; color: #334155;">98765432109<br><span style="font-size: 0.8rem; color: #64748b;">2025-1105</span></td>
+                                <td style="padding: 1rem 1.5rem; color: #334155;">Ankara</td>
+                                <td style="padding: 1rem 1.5rem; text-align: right;">
+                                    <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="selectFarmer('mehmet')">
+                                        <i class="fa-solid fa-folder-open"></i> Parselleri Gör
+                                    </button>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+
+                <div id="parcels-container" style="display: none;">
+                    <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+                        <h3 style="margin: 0; color: #1e293b; font-size: 1.25rem;"><i class="fa-solid fa-layer-group" style="color: #64748b; margin-right: 10px;"></i> <span id="selected-farmer-title">Çiftçi</span> Parselleri</h3>
+                        <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;"><i class="fa-solid fa-plus"></i> Yeni Parsel Ekle</button>
+                    </div>
+                    
+                    <div class="card" style="padding: 0; overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="background-color: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                    <th style="padding: 1rem 1.5rem; color: #475569; font-weight: 600;">Parsel No</th>
+                                    <th style="padding: 1rem 1.5rem; color: #475569; font-weight: 600;">Ada/Parsel</th>
+                                    <th style="padding: 1rem 1.5rem; color: #475569; font-weight: 600;">Alan (m²)</th>
+                                    <th style="padding: 1rem 1.5rem; color: #475569; font-weight: 600;">Malik</th>
+                                    <th style="padding: 1rem 1.5rem; color: #475569; font-weight: 600;">Kayıtlı Ürün</th>
+                                    <th style="padding: 1rem 1.5rem; color: #475569; font-weight: 600;">ÇKS Tarihi</th>
+                                    <th style="padding: 1rem 1.5rem; color: #475569; font-weight: 600; text-align: center;">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cks-parcels-tbody">
+                                <!-- JS ile dinamik dolar -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
+
             <!-- GEÇMİŞ RAPORLAR SEKMESİ -->
             <div id="tab-raporlar" class="tab-pane">
                 <header class="content-header" style="margin-bottom: 2rem;">
@@ -365,7 +361,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="/static/js/main.js?v=39"></script>
+    <script src="/static/js/main.js?v=40"></script>
 </body>
 
 </html>

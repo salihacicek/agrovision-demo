@@ -875,41 +875,33 @@ const farmersDb = {
 };
 
 window.selectFarmer = function(farmerId) {
+    const container = document.getElementById('parcels-container');
+    const title = document.getElementById('selected-farmer-title');
+    const tbody = document.getElementById('cks-parcels-tbody');
+    
     if (!farmerId || farmerId === "") {
-        // Çiftçi seçilmedi, boş ekran göster
-        document.getElementById('cks-farmer-name').textContent = "Lütfen bir çiftçi seçin";
-        document.getElementById('cks-farmer-tc').textContent = "-";
-        document.getElementById('cks-farmer-no').textContent = "-";
-        document.getElementById('cks-farmer-city').textContent = "-";
-        document.getElementById('cks-farmer-count').textContent = "0 Parsel Kaydı";
-        const tbody = document.getElementById('cks-parcels-tbody');
-        if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:2rem;">Görüntülenecek parsel bulunamadı.</td></tr>`;
+        if (container) container.style.display = 'none';
         return;
     }
+    
     const farmer = farmersDb[farmerId];
     if (!farmer) return;
 
-    // 1. Çiftçi Bilgilerini Güncelle
-    document.getElementById('cks-farmer-name').textContent = farmer.name;
-    document.getElementById('cks-farmer-tc').textContent = farmer.tc;
-    document.getElementById('cks-farmer-no').textContent = farmer.no;
-    document.getElementById('cks-farmer-city').textContent = farmer.city;
-    document.getElementById('cks-farmer-count').textContent = farmer.parcels.length;
+    if (container) container.style.display = 'block';
+    if (title) title.textContent = farmer.name;
 
-    // 2. Parsel Tablosunu Güncelle
-    const tbody = document.getElementById('parsel-listesi-body');
     if (tbody) {
         let html = '';
         farmer.parcels.forEach(p => {
             html += `
-                <tr style="border-bottom: 1px solid #e2e8f0;">
+                <tr style="border-bottom: 1px solid #e2e8f0; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f1f5f9'" onmouseout="this.style.backgroundColor='transparent'">
                     <td style="padding: 1rem 1.5rem; color: #1e293b; font-weight: 500;">${p.no}</td>
                     <td style="padding: 1rem 1.5rem; color: #64748b;">${p.ada}</td>
                     <td style="padding: 1rem 1.5rem; color: #64748b;">${p.alan}</td>
                     <td style="padding: 1rem 1.5rem; color: #64748b;">${p.malik}</td>
                     <td style="padding: 1rem 1.5rem; color: #1e293b; font-weight: 600;">${p.kayitli}</td>
                     <td style="padding: 1rem 1.5rem; color: #64748b;">${p.tarih}</td>
-                    <td style="padding: 1rem 1.5rem;">
+                    <td style="padding: 1rem 1.5rem; text-align: center;">
                         <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.8rem;" onclick="window.inceleParsel('${p.mapId}')">
                             <i class="fa-solid fa-eye"></i> İncele
                         </button>
