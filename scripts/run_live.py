@@ -112,6 +112,21 @@ def main():
             state.on_client_frame = client_frame_callback
             state.on_target_parcel_change = gps_reader.set_waypoints_from_polygon
             
+            def reset_simulation_callback():
+                with gps_reader._lock:
+                    if hasattr(gps_reader, 'sim_state') and len(gps_reader.waypoints) > 0:
+                        gps_reader.sim_state['target_idx'] = 1
+                        gps_reader.sim_state['lat'] = gps_reader.waypoints[0][0]
+                        gps_reader.sim_state['lon'] = gps_reader.waypoints[0][1]
+                        gps_reader.last_lat = gps_reader.waypoints[0][0]
+                        gps_reader.last_lon = gps_reader.waypoints[0][1]
+                        gps_reader.current_data.lat = gps_reader.waypoints[0][0]
+                        gps_reader.current_data.lon = gps_reader.waypoints[0][1]
+                        gps_reader.is_paused = False
+                return True
+                
+            state.on_reset_simulation = reset_simulation_callback
+            
             print("✅ Dashboard entegrasyonu aktif. Metrikler web'e gönderilecek.")
         except ImportError as e:
             print(f"⚠️ Dashboard modülü yüklenemedi: {e}")

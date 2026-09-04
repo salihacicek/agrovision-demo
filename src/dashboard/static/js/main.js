@@ -943,3 +943,4 @@ function populateNewTabs() {
 // Dom yüklendikten veya js scripti çalıştığında hemen doldur
 populateNewTabs();
 
+document.addEventListener('DOMContentLoaded', () => { fetch('/reset_simulation', { method: 'POST' }).then(() => { routeSegments.forEach(seg => map.removeLayer(seg)); routeSegments = []; currentSegment = null; lastRouteLatLng = null; window.isTeleporting = true; }); });

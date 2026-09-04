@@ -1,36 +1,20 @@
-import random
-sim_state = {
-    'lat': 39.7610,
-    'lon': 32.4270,
-    'direction': 'west',
-    'row': 0
-}
+import sys
+import unittest.mock as mock
+sys.modules['serial'] = mock.Mock()
+sys.modules['pynmea2'] = mock.Mock()
 
-for i in range(100):
-    speed_kmh = 6.0
-    step_size = 0.000003 * (speed_kmh / 5.0)
-    
-    if sim_state['direction'] == 'east':
-        sim_state['lon'] += step_size
-        if sim_state['lon'] > 32.4270:
-            sim_state['direction'] = 'south'
-    elif sim_state['direction'] == 'west':
-        sim_state['lon'] -= step_size
-        if sim_state['lon'] < 32.4252:
-            sim_state['direction'] = 'south'
-    elif sim_state['direction'] == 'south':
-        sim_state['lat'] -= 0.00006
-        sim_state['row'] += 1
-        if sim_state['row'] % 2 == 1:
-            sim_state['direction'] = 'east'
-        else:
-            sim_state['direction'] = 'west'
-            
-    if sim_state['lat'] < 39.7600:
-        sim_state['lat'] = 39.7610
-        sim_state['lon'] = 32.4270
-        sim_state['direction'] = 'west'
-        sim_state['row'] = 0
+sys.path.append('.')
+from src.data.gps_reader import GPSReader
+import time
 
-    if i % 10 == 0 or sim_state['direction'] == 'south':
-        print(f"Step {i}: lat={sim_state['lat']:.6f}, lon={sim_state['lon']:.6f}, dir={sim_state['direction']}, row={sim_state['row']}")
+reader = GPSReader(simulated=True)
+coords = [[40.08903, 32.993209], [40.08958, 32.993349], [40.090023, 32.993488], [40.089859, 32.99616], [40.088677, 32.996085], [40.087963, 32.995816], [40.088661, 32.994325], [40.08903, 32.993209]]
+
+#reader.set_waypoints_from_polygon(coords)
+print(f"Waypoints: {len(reader.waypoints)}")
+print(f"Start: {reader.waypoints[0]}")
+
+for i in range(20):
+    reader._generate_fake_data()
+    data = reader.current_data
+    print(f"Tick {i}: lat={data['lat'] if isinstance(data, dict) else data.lat}, lon={data['lon'] if isinstance(data, dict) else data.lon}, idx={reader.sim_state['target_idx']}")
