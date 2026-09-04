@@ -132,9 +132,14 @@ window.inceleParsel = function(mapId) {
     }
 }
 
+window.currentActiveParcelId = null;
 window.startOnParcel = function(parcelId) {
     const parcel = parcels.find(p => p.id === parcelId);
     if (!parcel) return;
+    
+    window.currentActiveParcelId = parcelId;
+    const dropdown = document.getElementById('parcel-dropdown');
+    if (dropdown) dropdown.value = parcelId;
 
     // Renklendirme ve stil sıfırlama (highlight)
     if (parcelGeoJsonLayer) {
@@ -617,8 +622,12 @@ function downloadReport() {
     const btn = document.querySelector('.tracker-header .btn-primary');
     
     // Aktif parsel verilerini bul
-    const dropdown = document.getElementById('parcel-dropdown');
-    let currentParcelId = dropdown ? dropdown.value : null;
+    let currentParcelId = window.currentActiveParcelId;
+    if (!currentParcelId) {
+        const dropdown = document.getElementById('parcel-dropdown');
+        currentParcelId = dropdown ? dropdown.value : null;
+    }
+    
     let activeParcel = null;
     let ownerName = "Bilinmiyor";
     
@@ -723,9 +732,6 @@ function downloadReport() {
     
     // Geçmiş Raporlar Sekmesine Atla
     switchTab('tab-raporlar');
-    
-    // Hemen PDF de indir
-    downloadPdfReportDynamic(payload, btn);
 }
 
 function viewReportDetails(payloadStr, dateStr, timeStr) {
