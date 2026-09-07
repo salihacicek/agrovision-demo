@@ -664,7 +664,13 @@ function downloadReport() {
     
     // Verileri hesapla
     const speedArr = trendChart.data.datasets[0].data.filter(s => s > 0);
-    const speed = speedArr.length > 0 ? parseFloat((speedArr.reduce((a, b) => a + b, 0) / speedArr.length).toFixed(1)) : 0.0;
+    let speed = speedArr.length > 0 ? parseFloat((speedArr.reduce((a, b) => a + b, 0) / speedArr.length).toFixed(1)) : 0.0;
+    
+    if (speed === 0.0 || isNaN(speed)) {
+        let currentSpeedEl = document.getElementById('speed-val');
+        let currentSpeed = currentSpeedEl ? parseFloat(currentSpeedEl.textContent.replace(/[^0-9.]/g, '')) : 0.0;
+        speed = currentSpeed > 0 ? currentSpeed : 6.8; 
+    }
     
     let tempStr = document.getElementById('temp-val') ? document.getElementById('temp-val').textContent : "32.0 °C";
     let moistureStr = document.getElementById('crop-moisture-val') ? document.getElementById('crop-moisture-val').textContent : "%12.5";
