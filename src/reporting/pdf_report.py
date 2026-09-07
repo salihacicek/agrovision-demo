@@ -3,37 +3,32 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from datetime import datetime
-
-def sanitize_turkish(text: str) -> str:
-    if not isinstance(text, str):
-        return str(text)
-    replacements = {
-        'ı': 'i', 'I': 'I',
-        'İ': 'I', 'i': 'i',
-        'ş': 's', 'Ş': 'S',
-        'ğ': 'g', 'Ğ': 'G',
-        'ü': 'u', 'Ü': 'U',
-        'ö': 'o', 'Ö': 'O',
-        'ç': 'c', 'Ç': 'C'
-    }
-    for s, r in replacements.items():
-        text = text.replace(s, r)
-    return text
 
 class PDFReportGenerator:
     '''Otenelabs formatında PDF raporları oluşturan sınıf.'''
     
     def __init__(self, output_dir: str = "exports"):
+        # app.py'daki export_dir ile tutarlı olsun diye exports yapıyorum
         self.output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../exports"))
         os.makedirs(self.output_dir, exist_ok=True)
+        
+        # Türkçe karakter destekli Roboto fontlarını sisteme tanıt
+        font_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "fonts"))
+        pdfmetrics.registerFont(TTFont('Roboto', os.path.join(font_dir, 'Roboto-Regular.ttf')))
+        pdfmetrics.registerFont(TTFont('Roboto-Bold', os.path.join(font_dir, 'Roboto-Bold.ttf')))
+        
         self.styles = getSampleStyleSheet()
         self._create_custom_styles()
 
     def _create_custom_styles(self):
+        '''Otenelabs özel stillerini tanımlar.'''
         self.styles.add(ParagraphStyle(
             name='OtEneTitle',
             parent=self.styles['Heading1'],
+            fontName='Roboto-Bold',
             fontSize=16,
             textColor=colors.black,
             alignment=0, # Sol
@@ -43,6 +38,7 @@ class PDFReportGenerator:
         self.styles.add(ParagraphStyle(
             name='OtEneSub',
             parent=self.styles['Normal'],
+            fontName='Roboto',
             fontSize=10,
             textColor=colors.gray,
             spaceAfter=25
@@ -51,16 +47,17 @@ class PDFReportGenerator:
         self.styles.add(ParagraphStyle(
             name='OtEneHeading',
             parent=self.styles['Heading2'],
+            fontName='Roboto-Bold',
             fontSize=12,
             textColor=colors.black,
             spaceBefore=15,
-            spaceAfter=10,
-            fontName='Helvetica-Bold'
+            spaceAfter=10
         ))
         
         self.styles.add(ParagraphStyle(
             name='OtEneNormal',
             parent=self.styles['Normal'],
+            fontName='Roboto',
             fontSize=11,
             textColor=colors.black,
             spaceAfter=6,
@@ -70,12 +67,14 @@ class PDFReportGenerator:
         self.styles.add(ParagraphStyle(
             name='OtEneFooter',
             parent=self.styles['Normal'],
+            fontName='Roboto',
             fontSize=9,
             textColor=colors.gray,
             spaceBefore=40
         ))
 
     def generate_report(self, session_data: dict, output_filename: str = None) -> str:
+        '''JSON veya dictionary verilerinden PDF raporu üretir.'''
         if output_filename is None:
             output_filename = f"OtEneLabs_Rapor_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
             
@@ -84,11 +83,6 @@ class PDFReportGenerator:
         
         elements = []
         
-        # Sanitize all string values in session_data
-        for key in session_data:
-            if isinstance(session_data[key], str):
-                session_data[key] = sanitize_turkish(session_data[key])
-                
         # Format the numbers
         total_area_m2 = float(session_data.get('total_area_m2', 0.0))
         total_area_donum = total_area_m2 / 1000.0
@@ -100,36 +94,42 @@ class PDFReportGenerator:
         
         timestamp = session_data.get('timestamp', datetime.now().strftime('%d.%m.%Y %H:%M:%S'))
         try:
+            # Try to format timestamp if it's ISO
             dt = datetime.fromisoformat(timestamp)
             timestamp_str = dt.strftime('%d.%m.%Y %H:%M:%S')
         except:
             timestamp_str = timestamp
             
+        # Başlık
         elements.append(Paragraph("Agrovision AI - Parsel Durum Raporu", self.styles['OtEneTitle']))
-        elements.append(Paragraph(f"Olusturulma Tarihi: {timestamp_str}", self.styles['OtEneSub']))
+        elements.append(Paragraph(f"Oluşturulma Tarihi: {timestamp_str}", self.styles['OtEneSub']))
         
+        # Parsel Bilgileri
         elements.append(Paragraph("Parsel Bilgileri", self.styles['OtEneHeading']))
         elements.append(Paragraph(f"Parsel No: {session_data.get('parsel_no', '-')}", self.styles['OtEneNormal']))
         elements.append(Paragraph(f"Ada / Parsel: {session_data.get('ada_parsel', '-')}", self.styles['OtEneNormal']))
-        elements.append(Paragraph(f"Toplam Alan: {total_area_m2:,.0f} m2 ({total_area_donum:.1f} donum)".replace(',', '.'), self.styles['OtEneNormal']))
+        elements.append(Paragraph(f"Toplam Alan: {total_area_m2:,.0f} m2 ({total_area_donum:.1f} dönüm)".replace(',', '.'), self.styles['OtEneNormal']))
         elements.append(Paragraph(f"Malik: {session_data.get('owner', '-')}", self.styles['OtEneNormal']))
         lat = session_data.get('gps', {}).get('lat', 37.968)
         lon = session_data.get('gps', {}).get('lon', 34.673)
         elements.append(Paragraph(f"Konum: Koordinat ({lat:.3f}, {lon:.3f})", self.styles['OtEneNormal']))
         
-        elements.append(Paragraph("CKS Kayit Bilgileri", self.styles['OtEneHeading']))
-        elements.append(Paragraph(f"Kayitli Urun: {session_data.get('declared_crop', 'Bilinmiyor').title()}", self.styles['OtEneNormal']))
+        # CKS Kayit Bilgileri
+        elements.append(Paragraph("ÇKS Kayıt Bilgileri", self.styles['OtEneHeading']))
+        elements.append(Paragraph(f"Kayıtlı Ürün: {session_data.get('declared_crop', 'Bilinmiyor').title()}", self.styles['OtEneNormal']))
         elements.append(Paragraph(f"Hasat Tarihi: {session_data.get('harvest_date', datetime.now().strftime('%Y-%m-%d'))}", self.styles['OtEneNormal']))
-        elements.append(Paragraph(f"Ciftci: {session_data.get('owner', '-')}", self.styles['OtEneNormal']))
+        elements.append(Paragraph(f"Çiftçi: {session_data.get('owner', '-')}", self.styles['OtEneNormal']))
         
-        elements.append(Paragraph("Telemetri & Hasat Sonuclari", self.styles['OtEneHeading']))
-        elements.append(Paragraph(f"Bicilen Alan: {harvested_area_m2:,.0f} m2 ({harvested_area_donum:.1f} donum)".replace(',', '.'), self.styles['OtEneNormal']))
-        elements.append(Paragraph(f"Tamamlanma Orani: %{completion_pct:.1f}", self.styles['OtEneNormal']))
-        elements.append(Paragraph(f"Ortalama Hiz: {session_data.get('avg_speed', 0.0)} km/s", self.styles['OtEneNormal']))
+        # Telemetri & Hasat Sonuclari
+        elements.append(Paragraph("Telemetri & Hasat Sonuçları", self.styles['OtEneHeading']))
+        elements.append(Paragraph(f"Biçilen Alan: {harvested_area_m2:,.0f} m2 ({harvested_area_donum:.1f} dönüm)".replace(',', '.'), self.styles['OtEneNormal']))
+        elements.append(Paragraph(f"Tamamlanma Oranı: %{completion_pct:.1f}", self.styles['OtEneNormal']))
+        elements.append(Paragraph(f"Ortalama Hız: {session_data.get('avg_speed', 0.0)} km/s", self.styles['OtEneNormal']))
         elements.append(Paragraph(f"Tahmini Verim: {session_data.get('estimated_yield', 0.0):.0f} kg/dekar", self.styles['OtEneNormal']))
-        elements.append(Paragraph(f"Ortalama Urun Nemi: %{session_data.get('avg_moisture', 0.0)}", self.styles['OtEneNormal']))
-        elements.append(Paragraph(f"Hava Sicakligi: {session_data.get('avg_temp', 0.0)} C", self.styles['OtEneNormal']))
+        elements.append(Paragraph(f"Ortalama Ürün Nemi: %{session_data.get('avg_moisture', 0.0)}", self.styles['OtEneNormal']))
+        elements.append(Paragraph(f"Hava Sıcaklığı: {session_data.get('avg_temp', 0.0)} °C", self.styles['OtEneNormal']))
         
+        # Status styling
         status = session_data.get('cks_audit_status', 'Bilinmiyor').upper()
         if 'UYGUN' in status and 'UYUMSUZ' not in status:
             status_text = "UYGUN"
@@ -139,9 +139,11 @@ class PDFReportGenerator:
             status_text = status
             
         elements.append(Paragraph(f"Durum: {status_text}", self.styles['OtEneNormal']))
-        elements.append(Paragraph("Son Kontrol: Guncel", self.styles['OtEneNormal']))
+        elements.append(Paragraph("Son Kontrol: Güncel", self.styles['OtEneNormal']))
         
-        elements.append(Paragraph("Bu rapor Agrovision AI Parsel Takip Sistemi tarafindan otomatik olarak olusturulmustur.", self.styles['OtEneFooter']))
+        # Footer
+        elements.append(Paragraph("Bu rapor Agrovision AI Parsel Takip Sistemi tarafından otomatik olarak oluşturulmuştur.", self.styles['OtEneFooter']))
         
+        # Build PDF
         doc.build(elements)
         return filepath
