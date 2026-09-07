@@ -95,6 +95,7 @@ async function loadTKGMParcels() {
                 }).bindPopup(popupContent).addTo(map);
             }
         }).addTo(map);
+        map.fitBounds(parcelGeoJsonLayer.getBounds());
         
     } catch (error) {
         console.error("GIS Katman Hatası:", error);
@@ -247,6 +248,7 @@ function addRoutePoint(lat, lon, speed) {
             lineJoin: 'round',
             lineCap: 'round'
         }).addTo(map);
+        map.fitBounds(parcelGeoJsonLayer.getBounds());
         routeSegments.push(currentSegment);
         currentSegmentIsRed = isHighSpeed;
     } else {
@@ -931,7 +933,14 @@ function switchTab(targetId) {
         target.classList.add('active');
         if (targetId === 'tab-arac-takip') {
             target.style.display = 'grid';
-            setTimeout(() => { if (typeof map !== 'undefined') map.invalidateSize(); }, 200);
+            setTimeout(() => { 
+                if (typeof map !== 'undefined') {
+                    map.invalidateSize(); 
+                    if (typeof parcelGeoJsonLayer !== 'undefined' && parcelGeoJsonLayer) {
+                        map.fitBounds(parcelGeoJsonLayer.getBounds());
+                    }
+                }
+            }, 200);
         } else if (targetId === 'tab-filo') {
             target.style.display = 'block';
             setTimeout(() => { 
