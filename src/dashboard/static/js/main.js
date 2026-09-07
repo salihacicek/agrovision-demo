@@ -935,9 +935,9 @@ function switchTab(targetId) {
         } else if (targetId === 'tab-filo') {
             target.style.display = 'block';
             setTimeout(() => { 
-                if (typeof fleetMap !== 'undefined' && !fleetMapInitialized) {
+                if (!fleetMapInitialized) {
                     initFleetMap();
-                } else if (typeof fleetMap !== 'undefined') {
+                } else if (fleetMap) {
                     fleetMap.invalidateSize(); 
                 }
             }, 200);
