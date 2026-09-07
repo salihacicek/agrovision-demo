@@ -6,7 +6,7 @@
     <title>Agrovision AI - Hassas Tarım İzleme Paneli</title>
     <!-- Harita için Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="/static/css/style.css?v=57">
+    <link rel="stylesheet" href="/static/css/style.css?v=58">
     <!-- İkonlar için FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -418,6 +418,33 @@ body #map, body #fleet-map {
     border-radius: 8px !important;
     border: 1px solid #cbd5e1 !important;
     box-shadow: none !important;
+}
+
+
+/* TELEMETRİ BÖLÜMÜNÜ BÜTÜNLEŞTİRME */
+body .telemetry-section {
+    display: flex !important;
+    background: #FAF6ED !important;
+    border-radius: 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+    gap: 0 !important;
+    overflow: hidden !important;
+    margin-top: 1.5rem !important;
+}
+
+body .telemetry-section > .card {
+    flex: 1 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border-right: 1px solid #e2e8f0 !important;
+    margin: 0 !important;
+}
+
+body .telemetry-section > .card:last-child {
+    border-right: none !important;
 }
 
 </style>
