@@ -1,4 +1,6 @@
 import os
+
+code = """import os
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
@@ -147,3 +149,7 @@ class PDFReportGenerator:
         # Build PDF
         doc.build(elements)
         return filepath
+"""
+
+with open('src/reporting/pdf_report.py', 'w') as f:
+    f.write(code)
