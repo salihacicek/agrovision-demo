@@ -173,6 +173,61 @@
             </div>
 
             
+            <!-- ARAÇ YÖNETİMİ SEKMESİ -->
+            <div id="tab-filo" class="tab-pane">
+                <div style="padding: 1.5rem; max-width: 1400px; margin: 0 auto;">
+                    
+                    <!-- Başlık ve KPI'lar -->
+                    <div style="margin-bottom: 2rem;">
+                        <h2 style="color: #1e293b; margin-bottom: 1.5rem; font-size: 1.5rem;">Araç Yönetim Merkezi</h2>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
+                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #3b82f6; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                                <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Toplam Araç</div>
+                                <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">5</div>
+                            </div>
+                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                                <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Aktif Hasatta</div>
+                                <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">3</div>
+                            </div>
+                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                                <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Beklemede / Yolda</div>
+                                <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">1</div>
+                            </div>
+                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #ef4444; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                                <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Bakımda</div>
+                                <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">1</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Harita ve Liste Kapsayıcı -->
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; height: 60vh;">
+                        
+                        <!-- Harita -->
+                        <div style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); position: relative;">
+                            <div style="position: absolute; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.9); padding: 1rem; z-index: 1000; border-bottom: 1px solid #e2e8f0; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 10px;">
+                                <i class="fa-solid fa-map-location-dot" style="color: #3b82f6;"></i> Canlı Araç Konumları
+                            </div>
+                            <div id="fleet-map" style="width: 100%; height: 100%; min-height: 500px;"></div>
+                        </div>
+                        
+                        <!-- Araç Listesi -->
+                        <div style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column;">
+                            <div style="background: #f8fafc; padding: 1.25rem; border-bottom: 1px solid #e2e8f0; font-weight: 600; color: #1e293b; display: flex; justify-content: space-between; align-items: center;">
+                                <span><i class="fa-solid fa-tractor" style="color: #10b981; margin-right: 8px;"></i> Araç Listesi</span>
+                                <span style="font-size: 0.75rem; background: #e2e8f0; padding: 3px 8px; border-radius: 12px; color: #475569;">Oto-Yenileme: Açık</span>
+                            </div>
+                            
+                            <div id="fleet-list" style="overflow-y: auto; flex: 1; padding: 1rem;">
+                                <!-- JS ile doldurulacak -->
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
             <!-- ÇKS SEKMESİ (BİRLEŞTİRİLMİŞ) -->
             <div id="tab-cks" class="tab-pane">
                 <div style="margin-bottom: 2rem;">
@@ -291,7 +346,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="/static/js/main.js?v=47"></script>
+    <script src="/static/js/main.js?v=48"></script>
 
     <!-- Report Details Modal -->
     <div id="report-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
