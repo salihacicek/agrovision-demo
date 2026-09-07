@@ -5,6 +5,23 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from datetime import datetime
 
+
+def sanitize_turkish(text: str) -> str:
+    if not isinstance(text, str):
+        return str(text)
+    replacements = {
+        'ı': 'i', 'I': 'I',
+        'İ': 'I', 'i': 'i',
+        'ş': 's', 'Ş': 'S',
+        'ğ': 'g', 'Ğ': 'G',
+        'ü': 'u', 'Ü': 'U',
+        'ö': 'o', 'Ö': 'O',
+        'ç': 'c', 'Ç': 'C'
+    }
+    for s, r in replacements.items():
+        text = text.replace(s, r)
+    return text
+
 class PDFReportGenerator:
     """Otenelabs formatında PDF raporları oluşturan sınıf."""
     
@@ -71,6 +88,12 @@ class PDFReportGenerator:
         
         elements = []
         
+        
+        # Sanitize all string values in session_data to avoid ReportLab font rendering issues with Turkish chars
+        for key in session_data:
+            if isinstance(session_data[key], str):
+                session_data[key] = sanitize_turkish(session_data[key])
+                
         # Format the numbers
         total_area_m2 = float(session_data.get('total_area_m2', 0.0))
         total_area_donum = total_area_m2 / 1000.0
