@@ -6,7 +6,7 @@
     <title>Agrovision AI - Hassas Tarım İzleme Paneli</title>
     <!-- Harita için Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="/static/css/style.css?v=20">
+    <link rel="stylesheet" href="/static/css/style.css?v=52">
     <!-- İkonlar için FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -365,6 +365,61 @@ body, html {
     background: #f8fafc !important; /* Mesh gradienti iptal et */
 }
 
+
+/* KURUMSAL TARIM - AI/NEON İPTALİ */
+body, html, .dashboard-container, .main-content {
+    background: #fdf8f5 !important; /* Çok uçuk toprak/krem rengi */
+}
+
+/* Tüm ikonlardaki gradientleri ez ve düz kurumsal siyah/kahve yap */
+body i, 
+body .fa-solid, 
+body .card-icon, 
+body .kpi-icon, 
+body .stat-card i,
+body .telemetry-card i {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: unset !important;
+    color: #451a03 !important; /* Koyu kahve/siyah */
+}
+
+/* Yuvarlak kutulu ikonların arka planını çok uçuk krem yap */
+body .icon-box, 
+body .stat-icon, 
+body .kpi-icon-wrapper {
+    background: #f5ece5 !important;
+    box-shadow: none !important;
+    border: 1px solid #e7d5c7 !important;
+}
+
+/* Butonları da klasik yeşil/toprak tonu yap (Neon değil) */
+body .btn-primary, body .control-btn.play-btn {
+    background: #166534 !important; /* Koyu orman yeşili */
+    box-shadow: none !important;
+    color: white !important;
+    border-radius: 6px !important; /* Fazla yuvarlak değil */
+}
+body .btn-primary:hover, body .control-btn.play-btn:hover {
+    background: #14532d !important;
+    transform: none !important;
+}
+
+/* Tablo ve Kartların arka planı bembeyaz ve hafif gri gölgeli */
+body .card, body .telemetry-card, body .table-container {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;
+    border-radius: 8px !important;
+}
+
+/* Harita kenarlığı */
+body #map, body #fleet-map {
+    border-radius: 8px !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+}
+
 </style>
 </head>
 
@@ -384,7 +439,7 @@ body, html {
                 <a href="#" class="nav-link" data-target="tab-filo">Araç Yönetimi</a>
                 <a href="#" class="nav-link" data-target="tab-cks">ÇKS & Parsel Yönetimi</a>
                 <a href="#" class="nav-link" data-target="tab-raporlar">Hasat Raporları</a>
-                <a href="#" class="nav-link" data-target="tab-gizlilik">Sistem Ayarları</a>
+                
             </nav>
         </header>
 
@@ -396,9 +451,9 @@ body, html {
                     <div class="hero-banner">
                         <div class="hero-overlay-classic"></div>
                         <div class="hero-content-classic">
-                            <h1>Agricultural Products</h1>
-                            <p>PROIN ID VOLUTPAT METUS, VEL BIBENDUM METUS</p>
-                            <button class="hero-btn" onclick="switchTab('tab-arac-takip')">SHOP NOW</button>
+                            <h1>TARIMSAL ÇÖZÜMLER</h1>
+                            <p>YENİLİKÇİ HASAT VE TELEMETRİ YÖNETİMİ</p>
+                            <button class="hero-btn" onclick="switchTab('tab-arac-takip')">SİSTEME GİRİŞ</button>
                         </div>
                     </div>
                     
@@ -680,21 +735,7 @@ body, html {
 
             <!-- GİZLİLİK VE AYARLAR SEKME -->
 
-            <div id="tab-gizlilik" class="tab-pane">
-                <header class="content-header">
-                    <div>
-                        <h1>Sistem Ayarları</h1>
-                        <p class="subtitle">Konfigürasyon paneli.</p>
-                    </div>
-                </header>
-                <div class="content-grid" style="grid-template-columns: 1fr;">
-                    <div class="card">
-                        <h3>Simülasyon Ayarları</h3>
-                        <p>Buradan sistem davranışlarını ayarlayabilirsiniz.</p>
-                        <!-- Ayarlar buraya eklenebilir -->
-                    </div>
-                </div>
-            </div>
+            
             
         </main>
     </div>
