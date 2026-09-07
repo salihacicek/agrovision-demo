@@ -143,7 +143,7 @@ body .landing-page {
     left: 0 !important; 
     width: 100vw !important; 
     height: 100vh !important;
-    background: url('/static/assets/img/hero-bg.jpg') center/cover no-repeat !important;
+    background: url('/static/assets/img/hero-bg-highres.jpg') center/cover no-repeat !important;
     z-index: 0 !important;
     display: flex !important;
     flex-direction: column !important;
@@ -223,8 +223,8 @@ body .landing-page-classic {
 body .hero-banner {
     position: relative !important;
     width: 100% !important;
-    height: 500px !important;
-    background: url('/static/assets/img/hero-bg.jpg') center/cover no-repeat !important;
+    height: 450px !important;
+    background: url('/static/assets/img/hero-bg-highres.jpg') center/cover no-repeat !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -256,8 +256,8 @@ body .hero-content-classic p {
     font-weight: 600 !important;
 }
 body .hero-btn {
-    background: #4ade80 !important;
-    color: #064e3b !important;
+    background: #eab308 !important; /* Soft wheat yellow */
+    color: #422006 !important; /* Dark brown text */
     padding: 12px 35px !important;
     border: none !important;
     border-radius: 4px !important;
@@ -267,11 +267,11 @@ body .hero-btn {
     transition: all 0.3s !important;
 }
 body .hero-btn:hover {
-    background: #22c55e !important;
+    background: #ca8a04 !important;
 }
 
 body .features-section {
-    padding: 6rem 2rem !important;
+    padding: 3rem 2rem 5rem 2rem !important;
     background: #ffffff !important;
     display: flex !important;
     justify-content: center !important;
@@ -286,7 +286,7 @@ body .feature-card {
 body .feature-card .icon-wrapper {
     width: 110px !important;
     height: 110px !important;
-    background: #fdf8f5 !important;
+    background: #292524 !important; /* Koyu antrasit/kahve */
     border-radius: 50% !important;
     display: flex !important;
     align-items: center !important;
@@ -300,7 +300,7 @@ body .feature-card:hover .icon-wrapper {
 }
 body .feature-card .icon-wrapper i {
     font-size: 2.5rem !important;
-    color: #d97706 !important;
+    color: #ffffff !important; /* Beyaz ikon */
 }
 body .feature-card h3 {
     font-size: 1.25rem !important;
@@ -316,7 +316,7 @@ body .feature-card p {
     margin-bottom: 1.5rem !important;
 }
 body .feature-card .read-more {
-    color: #d97706 !important;
+    color: #ffffff !important; /* Beyaz ikon */
     font-weight: 700 !important;
     font-size: 0.85rem !important;
 }
@@ -339,7 +339,7 @@ body .dashboard-container .top-navbar .logo h2 {
     letter-spacing: 1px !important;
 }
 body .dashboard-container .top-navbar .logo i {
-    color: #d97706 !important;
+    color: #ffffff !important; /* Beyaz ikon */
     text-shadow: none !important;
 }
 body .dashboard-container .top-navbar .nav-link {
@@ -350,7 +350,7 @@ body .dashboard-container .top-navbar .nav-link {
     border-radius: 0 !important;
 }
 body .dashboard-container .top-navbar .nav-link:hover {
-    color: #d97706 !important;
+    color: #ffffff !important; /* Beyaz ikon */
     background: transparent !important;
 }
 body .dashboard-container .top-navbar .nav-link.active {
@@ -368,7 +368,7 @@ body, html {
 
 /* KURUMSAL TARIM - AI/NEON İPTALİ */
 body, html, .dashboard-container, .main-content {
-    background: #fdf8f5 !important; /* Çok uçuk toprak/krem rengi */
+    background: #292524 !important; /* Koyu antrasit/kahve */ /* Çok uçuk toprak/krem rengi */
 }
 
 /* Tüm ikonlardaki gradientleri ez ve düz kurumsal siyah/kahve yap */
@@ -453,7 +453,7 @@ body #map, body #fleet-map {
                         <div class="hero-content-classic">
                             <h1>TARIMSAL ÇÖZÜMLER</h1>
                             <p>YENİLİKÇİ HASAT VE TELEMETRİ YÖNETİMİ</p>
-                            <button class="hero-btn" onclick="switchTab('tab-arac-takip')">SİSTEME GİRİŞ</button>
+                            <button class="hero-btn" onclick="switchTab('tab-arac-takip')">CANLI İZLEMEYE BAŞLA</button>
                         </div>
                     </div>
                     
@@ -462,21 +462,26 @@ body #map, body #fleet-map {
                             <div class="icon-wrapper"><i class="fa-solid fa-map-location-dot"></i></div>
                             <h3>CANLI İZLEME</h3>
                             <p>Canlı biçerdöver rotaları ve telemetri verilerinin anlık takibi. Hasat sürecini optimize edin.</p>
-                            <span class="read-more">+ READ MORE</span>
+                            
                         </div>
                         
                         <div class="feature-card" onclick="switchTab('tab-filo')">
                             <div class="icon-wrapper"><i class="fa-solid fa-truck-fast"></i></div>
                             <h3>ARAÇ YÖNETİMİ</h3>
                             <p>Tüm filonun harita üzerinde anlık takibi. Araçların operasyonel durumlarını anlık görün.</p>
-                            <span class="read-more">+ READ MORE</span>
+                            
                         </div>
                         
                         <div class="feature-card" onclick="switchTab('tab-cks')">
                             <div class="icon-wrapper"><i class="fa-solid fa-address-card"></i></div>
                             <h3>ÇKS & PARSELLER</h3>
                             <p>Çiftçi Kayıt Sistemi entegrasyonu ve kayıtlı parsellerin yönetim süreçleri.</p>
-                            <span class="read-more">+ READ MORE</span>
+                            
+                        </div>
+                        <div class="feature-card" onclick="switchTab('tab-raporlar')">
+                            <div class="icon-wrapper"><i class="fa-solid fa-file-pdf"></i></div>
+                            <h3>HASAT RAPORLARI</h3>
+                            <p>Önceki hasatların telemetri kayıtları, detaylı analiz ve PDF raporlama.</p>
                         </div>
                     </div>
                 </div>
@@ -592,19 +597,19 @@ body #map, body #fleet-map {
                         <h2 style="color: #1e293b; margin-bottom: 1.5rem; font-size: 1.5rem;">Araç Yönetim Merkezi</h2>
                         
                         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
-                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #3b82f6; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #78350f; /* Koyu kahve */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Toplam Araç</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">5</div>
                             </div>
-                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #166534; /* Orman yeşili */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Aktif Hasatta</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">3</div>
                             </div>
-                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #ca8a04; /* Buğday sarısı */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Beklemede / Yolda</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">1</div>
                             </div>
-                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #ef4444; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #991b1b; /* Koyu kırmızı */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Bakımda</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">1</div>
                             </div>
