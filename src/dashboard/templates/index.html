@@ -6,7 +6,7 @@
     <title>Agrovision AI - Hassas Tarım İzleme Paneli</title>
     <!-- Harita için Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="/static/css/style.css?v=53">
+    <link rel="stylesheet" href="/static/css/style.css?v=54">
     <!-- İkonlar için FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -217,7 +217,7 @@ body .landing-page-classic {
     width: 100% !important;
     height: 100% !important;
     overflow-y: auto !important;
-    background: #ffffff !important;
+    background: #FAF6ED !important;
 }
 
 body .hero-banner {
@@ -272,7 +272,7 @@ body .hero-btn:hover {
 
 body .features-section {
     padding: 3rem 2rem 5rem 2rem !important;
-    background: #ffffff !important;
+    background: #FAF6ED !important;
     display: flex !important;
     justify-content: center !important;
     gap: 4rem !important;
@@ -323,7 +323,7 @@ body .feature-card .read-more {
 
 /* NAVBAR BEYAZ & DÜZ YAP (Extreme Premium İptali) */
 body .dashboard-container .top-navbar {
-    background: #ffffff !important;
+    background: #FAF6ED !important;
     backdrop-filter: none !important;
     border: none !important;
     border-bottom: 1px solid #f1f5f9 !important;
@@ -362,13 +362,13 @@ body .dashboard-container .top-navbar .nav-link.active {
 
 /* HARİTA VE DİĞER EKRANLARIN ARKA PLANINI DÜZELT */
 body, html {
-    background: #f8fafc !important; /* Mesh gradienti iptal et */
+    background: #FAF6ED !important; /* Premium elite cream */
 }
 
 
 /* KURUMSAL TARIM - AI/NEON İPTALİ */
 body, html, .dashboard-container, .main-content {
-    background: #292524 !important; /* Koyu antrasit/kahve */ /* Çok uçuk toprak/krem rengi */
+    background: #FAF6ED !important; /* Premium elite cream */
 }
 
 /* Tüm ikonlardaki gradientleri ez ve düz kurumsal siyah/kahve yap */
@@ -407,7 +407,7 @@ body .btn-primary:hover, body .control-btn.play-btn:hover {
 
 /* Tablo ve Kartların arka planı bembeyaz ve hafif gri gölgeli */
 body .card, body .telemetry-card, body .table-container {
-    background: #ffffff !important;
+    background: #FAF6ED !important;
     border: 1px solid #e2e8f0 !important;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;
     border-radius: 8px !important;
@@ -508,7 +508,7 @@ body #map, body #fleet-map {
                         <div class="map-controls" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 5px; padding: 0 5px;">
                             
                             <!-- Sol Taraf: Sürücü -->
-                            <div style="background: #f8fafc; padding: 6px 15px 6px 6px; border-radius: 30px; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0; font-size: 0.9rem; font-weight: 600; color: #1e293b;">
+                            <div style="background: #FAF6ED; padding: 6px 15px 6px 6px; border-radius: 30px; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0; font-size: 0.9rem; font-weight: 600; color: #1e293b;">
                                 <div style="width: 36px; height: 36px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-user-astronaut"></i></div>
                                 <div>
                                     <div style="font-size: 0.75rem; color: #64748b; line-height: 1;">Operatör</div>
@@ -518,7 +518,7 @@ body #map, body #fleet-map {
 
                             <!-- Orta Kısım: Kontroller -->
                             <div style="display: flex; gap: 10px; align-items: center;">
-                                <select id="parcel-dropdown" onchange="if(this.value) startOnParcel(this.value)" style="padding: 10px 15px; border-radius: 30px; border: 1px solid #e2e8f0; background: white; color: #1e293b; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding-right: 35px; background-image: url('data:image/svg+xml;utf8,<svg fill=%22black%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position-x: 100%; background-position-y: 5px;">
+                                <select id="parcel-dropdown" onchange="if(this.value) startOnParcel(this.value)" style="padding: 10px 15px; border-radius: 30px; border: 1px solid #e2e8f0; background: #FAF6ED; color: #1e293b; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding-right: 35px; background-image: url('data:image/svg+xml;utf8,<svg fill=%22black%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>'); background-repeat: no-repeat; background-position-x: 100%; background-position-y: 5px;">
                                     <option value="">🚜 Parsel Seçimi...</option>
                                     <option value="P1789">P1789 (Ayçiçeği)</option>
                                     <option value="P1826">P1826 (Mısır)</option>
@@ -597,19 +597,19 @@ body #map, body #fleet-map {
                         <h2 style="color: #1e293b; margin-bottom: 1.5rem; font-size: 1.5rem;">Araç Yönetim Merkezi</h2>
                         
                         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
-                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #78350f; /* Koyu kahve */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            <div style="background: #FAF6ED; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #78350f; /* Koyu kahve */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Toplam Araç</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">5</div>
                             </div>
-                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #166534; /* Orman yeşili */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            <div style="background: #FAF6ED; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #166534; /* Orman yeşili */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Aktif Hasatta</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">3</div>
                             </div>
-                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #ca8a04; /* Buğday sarısı */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            <div style="background: #FAF6ED; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #ca8a04; /* Buğday sarısı */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Beklemede / Yolda</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">1</div>
                             </div>
-                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #991b1b; /* Koyu kırmızı */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            <div style="background: #FAF6ED; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #991b1b; /* Koyu kırmızı */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Bakımda</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">1</div>
                             </div>
@@ -620,16 +620,16 @@ body #map, body #fleet-map {
                     <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; height: 60vh;">
                         
                         <!-- Harita -->
-                        <div style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); position: relative;">
-                            <div style="position: absolute; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.9); padding: 1rem; z-index: 1000; border-bottom: 1px solid #e2e8f0; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 10px;">
+                        <div style="background: #FAF6ED; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); position: relative;">
+                            <div style="position: absolute; top: 0; left: 0; right: 0; background: rgba(250, 246, 237, 0.9); padding: 1rem; z-index: 1000; border-bottom: 1px solid #e2e8f0; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 10px;">
                                 <i class="fa-solid fa-map-location-dot" style="color: #3b82f6;"></i> Canlı Araç Konumları
                             </div>
                             <div id="fleet-map" style="width: 100%; height: 100%; min-height: 500px;"></div>
                         </div>
                         
                         <!-- Araç Listesi -->
-                        <div style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column;">
-                            <div style="background: #f8fafc; padding: 1.25rem; border-bottom: 1px solid #e2e8f0; font-weight: 600; color: #1e293b; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="background: #FAF6ED; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column;">
+                            <div style="background: #FAF6ED; padding: 1.25rem; border-bottom: 1px solid #e2e8f0; font-weight: 600; color: #1e293b; display: flex; justify-content: space-between; align-items: center;">
                                 <span><i class="fa-solid fa-tractor" style="color: #10b981; margin-right: 8px;"></i> Araç Listesi</span>
                                 <span style="font-size: 0.75rem; background: #e2e8f0; padding: 3px 8px; border-radius: 12px; color: #475569;">Oto-Yenileme: Açık</span>
                             </div>
@@ -751,7 +751,7 @@ body #map, body #fleet-map {
 
     <!-- Report Details Modal -->
     <div id="report-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
-        <div style="background: white; border-radius: 12px; width: 600px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden; display: flex; flex-direction: column;">
+        <div style="background: #FAF6ED; border-radius: 12px; width: 600px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden; display: flex; flex-direction: column;">
             
             <!-- Modal Header -->
             <div style="background: #1e293b; color: white; padding: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
@@ -774,15 +774,15 @@ body #map, body #fleet-map {
 
                 <h4 style="margin: 0 0 10px 0; color: #0f172a; border-bottom: 2px solid #f1f5f9; padding-bottom: 5px;">Hasat Sonuçları</h4>
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-                    <div style="background: #f8fafc; padding: 10px; border-radius: 8px;">
+                    <div style="background: #FAF6ED; padding: 10px; border-radius: 8px;">
                         <span style="color: #64748b; font-size: 0.8rem;">Toplam Alan</span><br>
                         <b id="modal-report-total" style="color: #3b82f6; font-size: 1.1rem;">-</b>
                     </div>
-                    <div style="background: #f8fafc; padding: 10px; border-radius: 8px;">
+                    <div style="background: #FAF6ED; padding: 10px; border-radius: 8px;">
                         <span style="color: #64748b; font-size: 0.8rem;">Biçilen Alan</span><br>
                         <b id="modal-report-harvested" style="color: #10b981; font-size: 1.1rem;">-</b>
                     </div>
-                    <div style="background: #f8fafc; padding: 10px; border-radius: 8px;">
+                    <div style="background: #FAF6ED; padding: 10px; border-radius: 8px;">
                         <span style="color: #64748b; font-size: 0.8rem;">Tamamlanma</span><br>
                         <b id="modal-report-pct" style="color: #f59e0b; font-size: 1.1rem;">-</b>
                     </div>
@@ -798,7 +798,7 @@ body #map, body #fleet-map {
             </div>
             
             <!-- Modal Footer -->
-            <div style="background: #f8fafc; padding: 1rem 1.5rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
+            <div style="background: #FAF6ED; padding: 1rem 1.5rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 10px;">
                 <button onclick="closeReportModal()" class="btn btn-secondary">Kapat</button>
                 <button id="modal-pdf-btn" class="btn btn-primary"><i class="fa-solid fa-download"></i> PDF İndir</button>
             </div>
