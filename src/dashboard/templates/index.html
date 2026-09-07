@@ -6,7 +6,7 @@
     <title>Agrovision AI - Hassas Tarım İzleme Paneli</title>
     <!-- Harita için Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="/static/css/style.css?v=56">
+    <link rel="stylesheet" href="/static/css/style.css?v=57">
     <!-- İkonlar için FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -217,7 +217,7 @@ body .landing-page-classic {
     width: 100% !important;
     height: 100% !important;
     overflow-y: auto !important;
-    background: #FAF6ED !important;
+    background: #E5D9C5 !important;
 }
 
 body .hero-banner {
@@ -272,7 +272,7 @@ body .hero-btn:hover {
 
 body .features-section {
     padding: 3rem 2rem 5rem 2rem !important;
-    background: #FAF6ED !important;
+    background: transparent !important;
     display: flex !important;
     justify-content: center !important;
     gap: 4rem !important;
@@ -596,20 +596,20 @@ body #map, body #fleet-map {
                     <div style="margin-bottom: 2rem;">
                         <h2 style="color: #1e293b; margin-bottom: 1.5rem; font-size: 1.5rem;">Araç Yönetim Merkezi</h2>
                         
-                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
-                            <div style="background: #FAF6ED; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #78350f; /* Koyu kahve */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                        <div style="display: flex; background: #FAF6ED; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); overflow: hidden;">
+                            <div style="flex: 1; padding: 1.5rem; border-right: 1px solid #e2e8f0; border-bottom: 4px solid #78350f;">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Toplam Araç</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">5</div>
                             </div>
-                            <div style="background: #FAF6ED; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #166534; /* Orman yeşili */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            <div style="flex: 1; padding: 1.5rem; border-right: 1px solid #e2e8f0; border-bottom: 4px solid #166534;">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Aktif Hasatta</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">3</div>
                             </div>
-                            <div style="background: #FAF6ED; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #ca8a04; /* Buğday sarısı */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            <div style="flex: 1; padding: 1.5rem; border-right: 1px solid #e2e8f0; border-bottom: 4px solid #ca8a04;">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Beklemede / Yolda</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">1</div>
                             </div>
-                            <div style="background: #FAF6ED; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; border-left: 4px solid #991b1b; /* Koyu kırmızı */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            <div style="flex: 1; padding: 1.5rem; border-bottom: 4px solid #991b1b;">
                                 <div style="color: #64748b; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Bakımda</div>
                                 <div style="font-size: 1.875rem; font-weight: 700; color: #0f172a;">1</div>
                             </div>
