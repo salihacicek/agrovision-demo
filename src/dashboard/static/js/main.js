@@ -248,7 +248,6 @@ function addRoutePoint(lat, lon, speed) {
             lineJoin: 'round',
             lineCap: 'round'
         }).addTo(map);
-        map.fitBounds(parcelGeoJsonLayer.getBounds());
         routeSegments.push(currentSegment);
         currentSegmentIsRed = isHighSpeed;
     } else {
@@ -294,12 +293,14 @@ map.on('dragstart', () => {
     if (dragResumeTimer) clearTimeout(dragResumeTimer);
 });
 
-// 5 saniye sonra otomatik takibe geri dön
+// Kullanıcı haritayı sürüklediğinde kalıcı olarak otomatik takibi bırak (kendi nerede bıraktıysa orada kalsın)
 map.on('dragend', () => {
-    if (dragResumeTimer) clearTimeout(dragResumeTimer);
-    dragResumeTimer = setTimeout(() => {
-        userDraggedMap = false;
-    }, 5000);
+    // Timeout kaldırıldı - Kullanıcı sayfayı yenileyene veya parsele tıklayana kadar manuel mod
+});
+
+// Ayrıca zoom yapıldığında da takibi bırakalım ki kendi zoom seviyesinde kalsın
+map.on('zoom', () => {
+    userDraggedMap = true;
 });
 
 // ─── WebSocket Bağlantısı — Sunucudan canlı veri al ────────────────
