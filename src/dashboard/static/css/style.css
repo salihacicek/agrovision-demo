@@ -1231,3 +1231,137 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+/* ========================================================= */
+/* PREMIUM UI UPGRADE OVERRIDES                              */
+/* ========================================================= */
+
+:root {
+    --bg-dark: #f1f5f9; /* Daha yumuşak açık gri arka plan */
+    --primary: #10b981; 
+    --primary-dark: #059669;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-pill: 9999px;
+}
+
+body {
+    background-color: var(--bg-dark);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-main);
+}
+
+/* Navbar Premium Upgrade */
+.top-navbar {
+    background: #0f172a; /* Derin Slate 900 */
+    border-bottom: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    height: 72px;
+}
+.top-navbar .logo h2 {
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+.top-navbar .logo i {
+    color: #34d399; /* Parlak yeşil yaprak */
+}
+.nav-link {
+    color: #94a3b8 !important;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-bottom: none !important;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+}
+.nav-link:hover {
+    color: #f8fafc !important;
+    background: rgba(255,255,255,0.05);
+}
+.nav-link.active {
+    color: #ffffff !important;
+    background: rgba(255,255,255,0.1);
+    border-bottom: none !important;
+}
+
+/* Kart ve Gölgelendirmeler */
+.card, .tracker-header, .telemetry-card {
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.03);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+.card:hover, .telemetry-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(16, 185, 129, 0.1); /* Hafif yeşil border glow */
+}
+
+/* Tracker Header (Harita Altı Kontrol Barı) */
+.tracker-header {
+    border-radius: var(--radius-pill);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    margin-bottom: 2rem;
+}
+
+/* Buton Upgrade'leri */
+.btn, .control-btn {
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+    border: none;
+}
+.btn-primary, .control-btn.play-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+}
+.btn-primary:hover, .control-btn.play-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    opacity: 1;
+}
+
+/* Telemetri Widget İkonları */
+.telemetry-card {
+    position: relative;
+    overflow: hidden;
+    padding: 1.5rem;
+}
+.telemetry-card i.fa-gauge-high,
+.telemetry-card i.fa-temperature-half,
+.telemetry-card i.fa-chart-pie {
+    background: #f1f5f9;
+    padding: 12px;
+    border-radius: 50%;
+    color: var(--secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+/* Harita border-radius fix */
+#map {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+.map-overlay {
+    border-radius: var(--radius-lg);
+}
+
