@@ -988,10 +988,10 @@ const farmersDb = {
     'osman': {
         name: 'Osman Cingitaş', tc: '12345678901', no: '2025-0158', city: 'Ankara',
         parcels: [
-            { no: '51-113-25-1', ada: '25/1', alan: 25000, malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026', mapId: 'P1789' },
-            { no: '51-113-25-2', ada: '25/2', alan: 25000, malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1826' },
-            { no: '51-113-25-3', ada: '25/3', alan: 25000, malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1959' },
-            { no: '51-113-25-4', ada: '25/4', alan: 25000, malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1986' }
+            { no: '06-113-25-1', ada: '25/1', alan: 25000, malik: 'Osman Cingitaş', kayitli: 'Ayçiçeği', tarih: '20.07.2026', mapId: 'P1789' },
+            { no: '06-113-25-2', ada: '25/2', alan: 25000, malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1826' },
+            { no: '06-113-25-3', ada: '25/3', alan: 25000, malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1959' },
+            { no: '06-113-25-4', ada: '25/4', alan: 25000, malik: 'Osman Cingitaş', kayitli: 'Mısır', tarih: '20.07.2026', mapId: 'P1986' }
         ]
     },
     'mehmet': {
@@ -1065,8 +1065,8 @@ let fleetMarkers = {};
 
 const fleetData = [
     { id: 'v1', plate: 'TR-06-AG-101', driver: 'Ahmet Yılmaz', status: 'Hasatta', statusClass: 'status-hasat', fuel: 75, lat: 40.0880, lon: 32.9950, speed: '8.5' },
-    { id: 'v2', plate: 'TR-51-HC-402', driver: 'Mehmet Demir', status: 'Hasatta', statusClass: 'status-hasat', fuel: 42, lat: 37.9680, lon: 34.6730, speed: '9.2' },
-    { id: 'v3', plate: 'TR-51-HC-403', driver: 'Ali Kaya', status: 'Beklemede', statusClass: 'status-yol', fuel: 88, lat: 37.9800, lon: 34.6600, speed: '0.0' },
+    { id: 'v2', plate: 'TR-06-HC-402', driver: 'Mehmet Demir', status: 'Hasatta', statusClass: 'status-hasat', fuel: 42, lat: 37.9680, lon: 34.6730, speed: '9.2' },
+    { id: 'v3', plate: 'TR-06-HC-403', driver: 'Ali Kaya', status: 'Beklemede', statusClass: 'status-yol', fuel: 88, lat: 37.9800, lon: 34.6600, speed: '0.0' },
     { id: 'v4', plate: 'TR-06-AG-102', driver: 'Hasan Yücel', status: 'Hasatta', statusClass: 'status-hasat', fuel: 15, lat: 40.0800, lon: 32.9800, speed: '7.8' },
     { id: 'v5', plate: 'TR-38-KY-205', driver: 'Kemal Sun', status: 'Bakımda', statusClass: 'status-bakim', fuel: 90, lat: 38.7300, lon: 35.4800, speed: '0.0' }
 ];
